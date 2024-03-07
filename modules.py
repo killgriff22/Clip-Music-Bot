@@ -14,4 +14,4 @@ user = discord.Client(intents=discord.Intents.all())
 Spotify_path = os.path.join(os.getcwd(), "Downloads/Spotify/")
 Youtube_path = os.path.join(os.getcwd(), "Downloads/Youtube/")
 Soundcloud_path = os.path.join(os.getcwd(), "Downloads/Soundcloud/")
-root = "/".join(Spotify_path.split("/")[:-3])+"/"
+root = os.getcwd()
