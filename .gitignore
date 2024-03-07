@@ -2,3 +2,7 @@
 /Downloads/Spotify/*.mp3
 /Downloads/SoundCloud/*.mp3
 /Downloads/YouTube/*.mp3
+/bin
+/lib
+/include
+/share
