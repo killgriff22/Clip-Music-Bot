@@ -42,4 +42,4 @@ class User:
     def __init__(self, user):
         self.user: discord.User = user
         self.search_urls = []
-        self.timeout = 3
+        self.timeout = 60
