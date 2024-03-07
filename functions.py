@@ -17,7 +17,7 @@ async def on_message(message):
         return
     split = message.content.split(' ')
     match split[0]:
-        case '!download', '!d':
+        case '!download' | '!d':
             command = message.content.split(' ')
             if "https" in command[1]:
                 if "spotify" in command[1]:
@@ -54,7 +54,7 @@ async def on_message(message):
                 tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}" for i, track in enumerate(search)]
                 tracks = "\n".join(tracks)
                 await message.channel.send(f'Search results for {" ".join(command[1:])}'+"\n"+tracks)
-        case '!list', '!l', '!album', '!a', '!playlist', '!pl':
+        case '!list' | '!l' | '!album' | '!a' | '!playlist' | '!pl':
             if "https" in split[1]:
                 if "spotify" in split[1]:
                     if 'album' in split[1]:
