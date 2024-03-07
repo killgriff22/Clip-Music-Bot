@@ -1,0 +1,2 @@
+[console_scripts]
+scdl = scdl.scdl:main
