@@ -79,7 +79,7 @@ async def on_message(message):
                         await message.channel.send(f"Downloaded {user_.search_urls[int(split[1])]}", files=[discord.File(file)])
                         os.remove(file)
                         break
-        case message.content.startswith('!play'):
+        case '!play':
             if len(queue) == 0:
                 command = message.content.split(' ')
                 if "https" in command[1]:
