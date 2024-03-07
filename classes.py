@@ -37,3 +37,8 @@ class Soundcloud:
         after_download = os.listdir(Soundcloud_path)
         filename = list(set(after_download) - set(before_download))[0]
         return filename
+    
+class User:
+    def __init__(self, user):
+        self.user = user
+        self.search_urls = []
