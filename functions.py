@@ -30,17 +30,20 @@ async def on_message(message):
                 await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(file)])
                 os.remove(file)
         elif command[1].isdigit():
-            for user_ in users:
+            for user_ in users.copy():
                 if user_.user == message.author:
                     await message.channel.send(f"downloading {user_.search_urls[int(command[1])]}")
                     file = Spotify_path + Spotify.download_url(user_.search_urls[int(command[1])])
                     await message.channel.send(f"Downloaded {user_.search_urls[int(command[1])]}",files=[discord.File(file)])
                     os.remove(file)
+                    users.remove(user_)
+                    break
         else: #assume we want to search for something
             users.append(User(message.author))
             search = spotify.search(command[1])['tracks']['items']
             users[-1].search_urls = [search[i]['external_urls']['spotify'] for i in range(len(search))]
-            await message.channel.send(f"""Search results for {command[1]}\n{"\n".join([f"{i} : {track['name']} - {track['artists'][0]['name']}" for i,track in enumerate(search)])}""")
+            await message.channel.send(f"""Search results for {command[1]}
+{"\n".join([f"{i} : {track['name']} - {track['artists'][0]['name']}" for i,track in enumerate(search)])}""")
         
     elif message.content.startswith('!play'):
         if len(queue) == 0:
