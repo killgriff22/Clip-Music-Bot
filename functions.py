@@ -17,10 +17,16 @@ async def on_message(message):
         if "https" in command[1]:
             if "spotify" in command[1]:
                 await message.channel.send(f"downloading {command[1]}")
-                await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(Spotify_path + Spotify.download_url(command[1]))])
+                file = Spotify_path + Spotify.download_url(command[1])
+                await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(file)])
+                os.remove(file)
             elif "youtube" in command[1]:
                 await message.channel.send(f"downloading {command[1]}")
-                await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(Youtube_path + Youtube.download_url(command[1]))])
+                file = Youtube_path + Youtube.download_url(command[1])
+                await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(file)])
+                os.remove(file)
             elif "soundcloud" in command[1]:
                 await message.channel.send(f"downloading {command[1]}")
-                await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(Soundcloud_path + Soundcloud.download_url(command[1]))])
+                file = Soundcloud_path + Soundcloud.download_url(command[1])
+                await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(file)])
+                os.remove(file)
