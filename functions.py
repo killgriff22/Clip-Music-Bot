@@ -22,7 +22,5 @@ async def on_message(message):
                 await message.channel.send(f"downloading {command[1]}")
                 await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(Youtube_path + Youtube.download_url(command[1]) + ".mp3")])
             elif "soundcloud" in command[1]:
-                #await message.channel.send(f"downloading {command[1]}")
-                Soundcloud.download_url(command[1])
-                return
+                await message.channel.send(f"downloading {command[1]}")
                 await message.channel.send(f"Downloaded {command[1]}",files=[discord.File(Soundcloud_path + Soundcloud.download_url(command[1]) + ".mp3")])

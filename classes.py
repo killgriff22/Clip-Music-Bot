@@ -28,9 +28,5 @@ class Soundcloud:
         os.chdir(Soundcloud_path)
         os.system(f"scdl -l {url}")
         os.chdir(os.path.join(os.getcwd(), root))
-        return
-        file_name = ""
-        for artist in spotify.track(url)["artists"]:
-            file_name += artist["name"] + ", "
-        file_name = file_name[:-2]
-        return f"{file_name} - {spotify.track(url)['name']}"
+        artist, track = url.split("/")[-2], url.split("/")[-1]
+        return f"{artist} - {track}"

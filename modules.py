@@ -4,7 +4,6 @@ import requests
 import os
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
         client_id=spotipy_creds["client_id"],
