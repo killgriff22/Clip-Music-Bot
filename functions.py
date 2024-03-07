@@ -12,7 +12,7 @@ async def on_message(message):
         return
     if not message.channel.id == 1215317925049667594:
         return
-    if message.content.startswith('!download'):
+    if message.content.startswith('!download') or message.content.startswith('!d'):
         command = message.content.split(' ')
         if "https" in command[1]:
             if "spotify" in command[1]:
