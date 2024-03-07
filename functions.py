@@ -65,6 +65,14 @@ async def on_message(message):
                         tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}" for i, track in enumerate(album['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Album {album["name"]}'+"\n"+tracks)
+                    elif 'playlist' in split[1]:
+                        users.append(User(message.author))
+                        playlist = spotify.playlist(split[1].split('/')[-1])
+                        for track in playlist['tracks']['items']:
+                            users[-1].search_urls.append(track['track']['external_urls']['spotify'])
+                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists'][0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
+                        tracks = "\n".join(tracks)
+                        await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtube" in split[1]:
                     await message.channel.send(f"Not Implemented")
                 elif "soundcloud" in split[1]:
