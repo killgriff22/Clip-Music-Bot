@@ -25,7 +25,7 @@ class Soundcloud:
     def download_url(url):
         # os change working dir
         print(f"downloading {url}")
-        os.chdir(Spotify_path)
+        os.chdir(Soundcloud_path)
         os.system(f"scdl -l {url}")
         os.chdir(os.path.join(os.getcwd(), root))
         return
