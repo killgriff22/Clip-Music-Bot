@@ -98,4 +98,4 @@ async def user_prompt_timeout():
             user_.timeout -= 1
         else:
             users.remove(user_)
-            user.get_channel(1215317925049667594).send(f"{user_.user.name} timed out")
+            await user.get_channel(1215317925049667594).send(f"{user_.user.name} timed out")
