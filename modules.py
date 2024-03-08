@@ -5,7 +5,9 @@ import os
 from discord.ext import tasks
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from ytmusicapi import YTMusic
 users = []
+yt = YTMusic('oauth.json')
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
         client_id=spotipy_creds["client_id"],

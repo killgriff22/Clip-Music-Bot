@@ -75,6 +75,9 @@ async def on_message(message):
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtube" in split[1]:
                     await message.channel.send(f"Not Implemented")
+                    return
+                    playlist = yt.get_playlist(split[1].split('=')[-1])
+                    print(playlist)
                 elif "soundcloud" in split[1]:
                     await message.channel.send(f"Not Implemented")
             elif split[1].isdigit():
@@ -86,6 +89,7 @@ async def on_message(message):
                                 user_.search_urls[int(split[1])])
                         await message.channel.send(f"Downloaded {user_.search_urls[int(split[1])]}", files=[discord.File(file)])
                         os.remove(file)
+                        user_.timeout += 10
                         break
         case '!play':
             if len(queue) == 0:
