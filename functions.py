@@ -16,8 +16,9 @@ async def on_message(message):
         if any(cmd in message.content for cmd in ['!status', '!s']):
             split = message.content.split(' ')
             with open('statuses.txt', 'a') as f:
-                f.write(f"{' '.join(split[1:])}\n")
-            await message.channel.send(f"Added {split[1]} to statuses")
+                add= ' '.join(split[1:])
+                f.write(f"{add}\n")
+            await message.channel.send(f"Added {add} to statuses")
             return
     if not message.channel.id == 1215317925049667594:
         return
