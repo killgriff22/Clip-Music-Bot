@@ -20,11 +20,6 @@ async def on_message(message):
                 f.write(f"{add}\n")
             with open('statuses.txt','r') as f:
                 length = len(f.readlines())
-            with open('stauses.txt','w+') as f:
-                file = f.readlines()
-                file[0] = f"{length} statuses\n"
-                file = ''.join(file)
-                f.write(file)
             await message.channel.send(f"Added {add} to statuses ({length})")
             return
     if not message.channel.id == 1215317925049667594:
