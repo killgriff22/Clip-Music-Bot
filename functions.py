@@ -52,11 +52,16 @@ async def on_message(message):
             elif command[1].isdigit():  # Given a number, assume we want to select from a list
                 for user_ in users.copy():
                     if user_.user == message.author:
-                        await message.channel.send(f"downloading {user_.search_urls[int(command[1])]}")
-                        file = Spotify_path + \
-                            Spotify.download_url(
-                                user_.search_urls[int(command[1])])
-                        await message.channel.send(f"Downloaded {user_.search_urls[int(command[1])]}", files=[discord.File(file)])
+                        url = user_.search_urls[int(command[1])]
+                        await message.channel.send(f"downloading {url}")
+                        if "spotify" in url:
+                            file = Spotify_path + \
+                                Spotify.download_url(
+                                    user_.search_urls[int(command[1])])
+                        elif "youtube" in url:
+                            file = Youtube_path + \
+                                    Youtube.download_url(url)
+                        await message.channel.send(f"Downloaded {url}", files=[discord.File(file)])
                         os.remove(file)
                         users.remove(user_)
                         break
@@ -93,10 +98,15 @@ async def on_message(message):
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtube" in split[1]:
-                    await message.channel.send(f"Not Implemented")
-                    return
-                    playlist = yt.get_playlist(split[1].split('=')[-1])
-                    print(playlist)
+                    playlist:Playlist = Playlist(split[1])
+                    users.append(User(message.author))
+                    for video in playlist.videos:
+                        users[-1].search_urls.append(
+                            video.watch_url
+                        )
+                    tracks = [f"{i} : {track.title} - {track.author}" for i, track in enumerate(playlist.videos)]
+                    tracks = "\n".join(tracks)
+                    await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "soundcloud" in split[1]:
                     await message.channel.send(f"Not Implemented")
             elif split[1].isdigit():
