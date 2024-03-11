@@ -11,7 +11,7 @@ try:
     import random
 except ImportError:
     import os
-    os.system("pip install pytube spotdl scdl requests spotipy")
+    os.system("pip install pytube spotdl scdl requests spotipy discord.py")
     from config import *
     import discord
     import requests
