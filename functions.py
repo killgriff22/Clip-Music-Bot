@@ -37,7 +37,7 @@ async def on_message(message):
                     await message.channel.send(f"downloading {command[1]}")
                     file = Youtube_path + Youtube.download_url(command[1])
                     await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
-                    #os.remove(file)
+                    os.remove(file)
                 elif "soundcloud" in command[1]:
                     await message.channel.send(f"downloading {command[1]}")
                     file = Soundcloud_path + Soundcloud.download_url(command[1])
