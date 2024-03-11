@@ -21,6 +21,8 @@ class Youtube:
         os.chdir(Youtube_path)
         video = YouTube(url)
         video.streams.filter(only_audio=True).first().download()
+        after_download = os.listdir(Youtube_path)
+        os.rename(list(set(after_download) - set(before_download))[0],list(set(after_download) - set(before_download))[0][:-1]+"3")
         os.chdir(root)
         after_download = os.listdir(Youtube_path)
         filename = list(set(after_download) - set(before_download))[0]
