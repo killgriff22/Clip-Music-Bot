@@ -22,7 +22,9 @@ class Youtube:
         video = YouTube(url)
         video.streams.filter(only_audio=True).first().download()
         after_download = os.listdir(Youtube_path)
-        os.rename(list(set(after_download) - set(before_download))[0],list(set(after_download) - set(before_download))[0][:-1]+"3")
+        filename = list(set(after_download) - set(before_download))[0]
+        os.system(f'ffmpeg -i "{filename}" -vn -ab 128k -ar 44100 -y "{filename[:-4]}.mp3"')
+        os.remove(filename)
         os.chdir(root)
         after_download = os.listdir(Youtube_path)
         filename = list(set(after_download) - set(before_download))[0]
