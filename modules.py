@@ -6,14 +6,14 @@ from discord.ext import tasks
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from ytmusicapi import YTMusic
+from pytube import YouTube, Playlist
 users = []
-yt = YTMusic('oauth.json')
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
         client_id=spotipy_creds["client_id"],
         client_secret=spotipy_creds["client_secret"]
-        )
     )
+)
 user = discord.Client(intents=discord.Intents.all())
 queue = []
 Spotify_path = os.path.join(os.getcwd(), "Downloads/Spotify/")

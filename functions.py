@@ -1,6 +1,6 @@
 from classes import *
-
-
+#
+#
 @user.event
 async def on_ready():
     print(f'{user.user.name} has connected to Discord!')
@@ -19,7 +19,7 @@ async def on_message(message):
     match split[0]:
         case '!download' | '!d':
             command = message.content.split(' ')
-            if "https" in command[1]:
+            if "https" in command[1]: #Given a link
                 if "spotify" in command[1]:
                     await message.channel.send(f"downloading {command[1]}")
                     file = Spotify_path + Spotify.download_url(command[1])
@@ -35,7 +35,7 @@ async def on_message(message):
                     file = Soundcloud_path + Soundcloud.download_url(command[1])
                     await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
                     os.remove(file)
-            elif command[1].isdigit():
+            elif command[1].isdigit(): #Given a number, assume we want to select from a list
                 for user_ in users.copy():
                     if user_.user == message.author:
                         await message.channel.send(f"downloading {user_.search_urls[int(command[1])]}")
@@ -49,9 +49,11 @@ async def on_message(message):
             else:  # assume we want to search for something
                 users.append(User(message.author))
                 search = spotify.search(" ".join(command[1:]))['tracks']['items']
+                #grab the most recent user and append the urls we can download
                 users[-1].search_urls = [search[i]['external_urls']['spotify']
                                          for i in range(len(search))]
-                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}" for i, track in enumerate(search)]
+                #format the search results
+                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify'] else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
                 tracks = "\n".join(tracks)
                 await message.channel.send(f'Search results for {" ".join(command[1:])}'+"\n"+tracks)
         case '!list' | '!l' | '!album' | '!a' | '!playlist' | '!pl':

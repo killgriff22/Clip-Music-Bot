@@ -19,7 +19,8 @@ class Youtube:
         # os change working dir
         before_download = os.listdir(Youtube_path)
         os.chdir(Youtube_path)
-        os.system(f"youtube-dl {url}")
+        video = YouTube(url)
+        video.streams.filter(only_audio=True).first().download()
         os.chdir(root)
         after_download = os.listdir(Youtube_path)
         filename = list(set(after_download) - set(before_download))[0]
