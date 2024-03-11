@@ -96,7 +96,7 @@ async def on_message(message):
                                 track['track']['external_urls']['spotify'])
                         tracks = [f"{i} : {track['track']['name']} - {track['track']['artists'][0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
                         tracks = "\n".join(tracks)
-                        await message.channel.send(f'Playlist {playlist.title}'+"\n"+tracks)
+                        await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtube" in split[1]:
                     playlist:Playlist = Playlist(split[1])
                     users.append(User(message.author))
@@ -106,7 +106,7 @@ async def on_message(message):
                         )
                     tracks = [f"{i} : {track.title} - {track.author}" for i, track in enumerate(playlist.videos)]
                     tracks = "\n".join(tracks)
-                    await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
+                    await message.channel.send(f'Playlist {playlist.title}'+"\n"+tracks)
                 elif "soundcloud" in split[1]:
                     await message.channel.send(f"Not Implemented")
             elif split[1].isdigit():
