@@ -58,7 +58,7 @@ async def on_message(message):
                             file = Spotify_path + \
                                 Spotify.download_url(
                                     user_.search_urls[int(command[1])])
-                        elif "youtube" in url:
+                        elif "youtu" in url:
                             file = Youtube_path + \
                                     Youtube.download_url(url)
                         await message.channel.send(f"Downloaded {url}", files=[discord.File(file)])
