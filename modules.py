@@ -7,6 +7,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from ytmusicapi import YTMusic
 from pytube import YouTube, Playlist
+import random
 users = []
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(

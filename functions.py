@@ -5,6 +5,7 @@ from classes import *
 async def on_ready():
     print(f'{user.user.name} has connected to Discord!')
     user_prompt_timeout.start()
+    status.start()
 
 
 @user.event
@@ -113,3 +114,10 @@ async def user_prompt_timeout():
         else:
             users.remove(user_)
             await user.get_channel(1215317925049667594).send(f"{user_.user.name} timed out")
+@tasks.loop(seconds=10)
+async def status():
+    with open('statuses.txt', 'r') as f:
+        statuses = f.readlines()
+        for i,status in enumerate(statuses.copy()):
+            statuses[i] = status.strip()
+    await user.change_presence(activity=discord.Game(name=random.choice(statuses)))
