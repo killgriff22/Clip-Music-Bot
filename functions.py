@@ -110,6 +110,9 @@ async def on_message(message):
             with open('statuses.txt', 'a') as f:
                 f.write(f"{split[1]}\n")
             await message.channel.send(f"Added {split[1]} to statuses")
+            os.system("git add statuses.txt")
+            os.system("git commit -m 'added status'")
+            os.system("git push")
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
     for user_ in users.copy():
