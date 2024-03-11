@@ -98,6 +98,8 @@ async def on_message(message):
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtube" in split[1]:
+                    await message.channel.send("Not Implemented")
+                    return
                     playlist:Playlist = Playlist(split[1])
                     users.append(User(message.author))
                     for video in playlist.videos:
