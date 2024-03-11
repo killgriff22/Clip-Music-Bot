@@ -38,7 +38,7 @@ async def on_message(message):
                     file = Spotify_path + Spotify.download_url(command[1])
                     await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
                     os.remove(file)
-                elif "youtube" in command[1]:
+                elif "youtu" in command[1]:
                     await message.channel.send(f"downloading {command[1]}")
                     file = Youtube_path + Youtube.download_url(command[1])
                     await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
@@ -97,7 +97,7 @@ async def on_message(message):
                         tracks = [f"{i} : {track['track']['name']} - {track['track']['artists'][0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
-                elif "youtube" in split[1]:
+                elif "youtu" in split[1]:
                     await message.channel.send("Not Implemented")
                     return
                     playlist:Playlist = Playlist(split[1])
@@ -126,7 +126,7 @@ async def on_message(message):
             if len(queue) == 0:
                 command = message.content.split(' ')
                 if "https" in command[1]:
-                    if "youtube" in command[1]:
+                    if "youtu" in command[1]:
                         url = command[1]
                         await message.channel.send(f"Playing {url}")
                         author = message.author
