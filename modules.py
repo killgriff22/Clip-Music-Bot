@@ -1,13 +1,26 @@
-from config import *
-import discord
-import requests
-import os
-from discord.ext import tasks
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-from ytmusicapi import YTMusic
-from pytube import YouTube, Playlist
-import random
+try:
+    from config import *
+    import discord
+    import requests
+    import os
+    from discord.ext import tasks
+    import spotipy
+    from spotipy.oauth2 import SpotifyClientCredentials
+    from ytmusicapi import YTMusic
+    from pytube import YouTube, Playlist
+    import random
+except ImportError:
+    os.system("pip install pytube spotdl scdl requests spotipy")
+    from config import *
+    import discord
+    import requests
+    import os
+    from discord.ext import tasks
+    import spotipy
+    from spotipy.oauth2 import SpotifyClientCredentials
+    from ytmusicapi import YTMusic
+    from pytube import YouTube, Playlist
+    import random
 users = []
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
