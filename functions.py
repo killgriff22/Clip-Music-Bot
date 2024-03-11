@@ -12,6 +12,15 @@ async def on_ready():
 async def on_message(message):
     if message.author == user.user:
         return
+    if message.content.startswith('!'):
+        if any(cmd in message.content for cmd in ['!status', '!s']):
+            with open('statuses.txt', 'a') as f:
+                f.write(f"{split[1]}\n")
+            await message.channel.send(f"Added {split[1]} to statuses")
+            os.system("git add statuses.txt")
+            os.system("git commit -m 'added status'")
+            os.system("git push")
+            return
     if not message.channel.id == 1215317925049667594:
         return
     if not message.content.startswith('!'):
@@ -106,13 +115,6 @@ async def on_message(message):
                         vc = await user.join_voice_channel(voice_channel)
                         player = await vc.create_ytdl_player(url)
                         player.start()
-        case '!status' | '!s':
-            with open('statuses.txt', 'a') as f:
-                f.write(f"{split[1]}\n")
-            await message.channel.send(f"Added {split[1]} to statuses")
-            os.system("git add statuses.txt")
-            os.system("git commit -m 'added status'")
-            os.system("git push")
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
     for user_ in users.copy():
