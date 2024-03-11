@@ -16,11 +16,8 @@ async def on_message(message):
         if any(cmd in message.content for cmd in ['!status', '!s']):
             split = message.content.split(' ')
             with open('statuses.txt', 'a') as f:
-                f.write(f"{split[1]}\n")
+                f.write(f"{' '.join(split[1:])}\n")
             await message.channel.send(f"Added {split[1]} to statuses")
-            os.system("git add statuses.txt")
-            os.system("git commit -m 'added status'")
-            os.system("git push")
             return
     if not message.channel.id == 1215317925049667594:
         return
