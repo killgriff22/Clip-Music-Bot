@@ -22,9 +22,6 @@ async def on_message(message):
                 f.write(f"{add}\n")
             with open('statuses.txt', 'r') as f:
                 length = len(f.readlines())
-            os.system("git add statuses.txt")
-            os.system("git commit -m added status")
-            os.system("git push https://killgriff22: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@github.com/killgriff22/clip-music-bot.git")
             await message.channel.send(f"Added {add} to statuses ({length})")
             return
     if not message.channel.id == 1215317925049667594:
@@ -71,8 +68,7 @@ async def on_message(message):
                 users[-1].search_urls = [search[i]['external_urls']['spotify']
                                          for i in range(len(search))]
                 # format the search results
-                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify']
-                                                                                  else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
+                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify'] else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
                 tracks = "\n".join(tracks)
                 await message.channel.send(f'Search results for {" ".join(command[1:])}'+"\n"+tracks)
         case '!list' | '!l' | '!album' | '!a' | '!playlist' | '!pl':
