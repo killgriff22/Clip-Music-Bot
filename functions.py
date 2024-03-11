@@ -22,6 +22,9 @@ async def on_message(message):
                 f.write(f"{add}\n")
             with open('statuses.txt', 'r') as f:
                 length = len(f.readlines())
+            os.system("git add statuses.txt")
+            os.system("git commit -m added status")
+            os.system("git push https://killgriff22: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@github.com/killgriff22/clip-music-bot.git")
             await message.channel.send(f"Added {add} to statuses ({length})")
             return
     if not message.channel.id == 1215317925049667594:
