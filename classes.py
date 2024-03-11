@@ -20,7 +20,7 @@ class Youtube:
         before_download = os.listdir(Youtube_path)
         os.chdir(Youtube_path)
         video = YouTube(url)
-        video.streams.filter(only_audio=True).first().download()
+        video.streams.filter(only_audio=True,file_extension="mp3").first().download()
         os.chdir(root)
         after_download = os.listdir(Youtube_path)
         filename = list(set(after_download) - set(before_download))[0]
