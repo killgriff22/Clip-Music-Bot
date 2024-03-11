@@ -120,4 +120,4 @@ async def status():
         statuses = f.readlines()
         for i,status in enumerate(statuses.copy()):
             statuses[i] = status.strip()
-    await user.change_presence(activity=discord.Game(name=random.choice(statuses)))
+    await user.change_presence(activity=Custom_listening_activity(name=random.choice(statuses)))
