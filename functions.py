@@ -89,7 +89,7 @@ async def on_message(message):
                         for track in playlist['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['track']['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists']
+                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists']\
                                                                       [0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
