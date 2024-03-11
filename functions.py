@@ -106,6 +106,10 @@ async def on_message(message):
                         vc = await user.join_voice_channel(voice_channel)
                         player = await vc.create_ytdl_player(url)
                         player.start()
+        case '!status' | '!s':
+            with open('statuses.txt', 'a') as f:
+                f.write(f"{split[1]}\n")
+            await message.channel.send(f"Added {split[1]} to statuses")
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
     for user_ in users.copy():
