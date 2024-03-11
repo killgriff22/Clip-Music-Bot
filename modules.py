@@ -10,11 +10,11 @@ try:
     from pytube import YouTube, Playlist
     import random
 except ImportError:
+    import os
     os.system("pip install pytube spotdl scdl requests spotipy")
     from config import *
     import discord
     import requests
-    import os
     from discord.ext import tasks
     import spotipy
     from spotipy.oauth2 import SpotifyClientCredentials
