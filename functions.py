@@ -125,7 +125,7 @@ async def on_message(message: discord.Message):
         case '!play':
             author = message.author
             voice_channel = message.guild.voice_channels[0]
-            vc = await user.join_voice_channel(voice_channel)
+            vc = await voice_channel.connect()
             vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg",
                     source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
 
