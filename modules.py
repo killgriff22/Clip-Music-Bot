@@ -14,6 +14,7 @@ try:
     import functools
     import itertools
     import math
+    from time import sleep
 except ImportError:
     import os
     os.system(
@@ -32,6 +33,7 @@ except ImportError:
     import functools
     import itertools
     import math
+    from time import sleep
 users = []
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
