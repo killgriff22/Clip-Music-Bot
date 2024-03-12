@@ -166,6 +166,8 @@ async def status():
 @tasks.loop(seconds=1)
 async def queue_loop():
     while queue:
+        while not vc.is_playing():
+            await asyncio.sleep(0.1)
         while vc.is_playing():
             await asyncio.sleep(0.1)
         vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
