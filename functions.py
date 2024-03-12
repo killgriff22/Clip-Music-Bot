@@ -130,24 +130,10 @@ async def on_message(message: discord.Message):
             url = split[1]
             command = split
             if "https" in url:
-                if "spotify" in command[1]:
-                    await message.channel.send(f"downloading {command[1]}")
-                    file = Spotify_path + Spotify.download_url(command[1])
-                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
-                elif "youtu" in command[1]:
-                    await message.channel.send(f"downloading {command[1]}")
-                    file = Youtube_path + Youtube.download_url(command[1])
-                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
-                elif "soundcloud" in command[1]:
-                    await message.channel.send(f"downloading {command[1]}")
-                    file = Soundcloud_path + \
-                        Soundcloud.download_url(command[1])
-                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                subprocess.Popen(["python3","downloader.py",url])
             elif "cache" in url:
                 await message.channel.send("Not Implemented")
                 return
-            queue.append(file)
-            print(queue)
         case '!r' | '!remove':
             index = split[1]
             if index.is_digit():
@@ -183,6 +169,8 @@ async def status():
 
 @tasks.loop(seconds=1)
 async def queue_loop():
+    global queue
+    queue = eval(open("queue.txt").read())
     if not queue:
         return
     music_channel = user.get_guild(1085995033037127750).get_channel(1164386048407781457)
@@ -195,4 +183,5 @@ async def queue_loop():
             await asyncio.sleep(0.1)
         os.remove(queue[0])
         queue.pop(0)
+        open("queue.txt","w").write(str(queue))
     await music_channel.send("Queue has ended")

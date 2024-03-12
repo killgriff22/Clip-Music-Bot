@@ -27,6 +27,7 @@ import itertools
 import math
 from time import sleep
 from atexit import register
+import subprocess
 users = []
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
@@ -35,7 +36,7 @@ spotify = spotipy.Spotify(
     )
 )
 user = discord.Client(intents=discord.Intents.all())
-queue = []
+queue = eval(open("queue.txt").read())
 Spotify_path = os.path.join(os.getcwd(), "Downloads/Spotify/")
 Youtube_path = os.path.join(os.getcwd(), "Downloads/Youtube/")
 Soundcloud_path = os.path.join(os.getcwd(), "Downloads/Soundcloud/")
@@ -48,4 +49,3 @@ def clean_exit():
         os.remove(Youtube_path+file) if "mp3" in file else None
     for file in os.listdir(Soundcloud_path):
         os.remove(Soundcloud_path+file) if "mp3" in file else None
-register(clean_exit)
