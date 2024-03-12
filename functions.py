@@ -24,7 +24,7 @@ async def on_message(message):
                 length = len(f.readlines())
             await message.channel.send(f"Added {add} to statuses ({length})")
             return
-    if not message.channel.id in [1215317925049667594,1164386048407781457]:
+    if not message.channel.id in [1215317925049667594, 1164386048407781457]:
         return
     if not message.content.startswith('!'):
         return
@@ -73,7 +73,8 @@ async def on_message(message):
                 users[-1].search_urls = [search[i]['external_urls']['spotify']
                                          for i in range(len(search))]
                 # format the search results
-                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify']else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
+                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify']
+                                                                                  else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
                 tracks = "\n".join(tracks)
                 await message.channel.send(f'Search results for {" ".join(command[1:])}'+"\n"+tracks)
         case '!list' | '!l' | '!album' | '!a' | '!playlist' | '!pl':
@@ -85,7 +86,8 @@ async def on_message(message):
                         for track in album['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}" for i, track in enumerate(album['tracks']['items'])]
+                        tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']
+                                                             }" for i, track in enumerate(album['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Album {album["name"]}'+"\n"+tracks)
                     elif 'playlist' in split[1]:
@@ -94,7 +96,8 @@ async def on_message(message):
                         for track in playlist['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['track']['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists'][0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
+                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists']
+                                                                      [0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtu" in split[1]:
@@ -106,7 +109,8 @@ async def on_message(message):
                         users[-1].search_urls.append(
                             video.watch_url
                         )
-                    tracks = [f"{i} : {track.title} - {track.author}" for i,track in enumerate(playlist.videos)]
+                    tracks = [f"{i} : {track.title} - {track.author}" for i,
+                              track in enumerate(playlist.videos)]
                     tracks = "\n".join(tracks)
                     await message.channel.send(f'Playlist {playlist.title}'+"\n"+tracks)
                 elif "soundcloud" in split[1]:
@@ -124,7 +128,7 @@ async def on_message(message):
                         break
         case '!play':
             author = message.author
-            voice_channel = author.voice_channel
+            voice_channel = author.channel
             vc = await user.join_voice_channel(voice_channel)
             vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg",
                     source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
