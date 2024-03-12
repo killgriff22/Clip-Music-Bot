@@ -168,10 +168,10 @@ async def queue_loop():
     print(queue)
     while queue:
         while not vc.is_playing():
-            await asyncio.sleep(0.1)
-        while vc.is_playing():
-            await asyncio.sleep(0.1)
-        vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
+            vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
                     source=queue[0]))
+        while vc.is_playing():
+            print("playing")
+            await asyncio.sleep(0.1)
         os.remove(queue[0])
         queue.pop(0)
