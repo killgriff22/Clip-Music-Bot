@@ -167,7 +167,7 @@ async def status():
 @tasks.loop(seconds=10)
 async def queue_loop():
     while not vc.is_playing():
-        asyncio.sleep(0.1)
+        await asyncio.sleep(0.1)
     while vc.is_playing():
-        asyncio.sleep(0.1)
+        await asyncio.sleep(0.1)
     print("queue has ended")
