@@ -7,6 +7,7 @@ async def on_ready():
     print(f'{user.user.name} has connected to Discord!')
     user_prompt_timeout.start()
     status.start()
+    queue_loop.start()
 
 
 @user.event
@@ -162,3 +163,8 @@ async def status():
         for i, status in enumerate(statuses.copy()):
             statuses[i] = status.strip()
     await user.change_presence(activity=Custom_listening_activity(name=random.choice(statuses)))
+
+@tasks.loop(seconds=10)
+async def queue_loop():
+    if user.voice_client.is_playing():
+        print("playing!")
