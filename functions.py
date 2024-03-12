@@ -2,7 +2,6 @@ from classes import *
 #
 #
 
-
 @user.event
 async def on_ready():
     print(f'{user.user.name} has connected to Discord!')
@@ -123,11 +122,28 @@ async def on_message(message: discord.Message):
                         user_.timeout += 10
                         break
         case '!play':
-            author = message.author
+            url = split[1]
+            if "https" in url:
+                if "spotify" in command[1]:
+                    await message.channel.send(f"downloading {command[1]}")
+                    file = Spotify_path + Spotify.download_url(command[1])
+                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                    os.remove(file)
+                elif "youtu" in command[1]:
+                    await message.channel.send(f"downloading {command[1]}")
+                    file = Youtube_path + Youtube.download_url(command[1])
+                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                    os.remove(file)
+                elif "soundcloud" in command[1]:
+                    await message.channel.send(f"downloading {command[1]}")
+                    file = Soundcloud_path + \
+                        Soundcloud.download_url(command[1])
+                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
             voice_channel = message.guild.voice_channels[0]
             vc = await voice_channel.connect()
             vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
-                    source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
+                    source=file))
+            await message.channel.send("queue has ended!")
 
 
 @tasks.loop(seconds=1)
