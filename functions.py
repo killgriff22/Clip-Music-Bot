@@ -183,8 +183,10 @@ async def status():
 
 @tasks.loop(seconds=1)
 async def queue_loop():
+    if not queue:
+        return
+    music_channel = user.get_guild(1085995033037127750).get_channel(1164386048407781457)
     while queue:
-        music_channel = user.get_guild(1085995033037127750).get_channel(1164386048407781457)
         await music_channel.send(f"Now playing {queue[0].split('/')[-1].split('.')[0]}")
         while not vc.is_playing():
             vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
@@ -193,3 +195,4 @@ async def queue_loop():
             await asyncio.sleep(0.1)
         os.remove(queue[0])
         queue.pop(0)
+    await music_channel.send("Queue has ended")
