@@ -143,7 +143,7 @@ async def on_message(message: discord.Message):
             vc = await voice_channel.connect()
             vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
                     source=file))
-            while vc.is_playing:
+            while vc.is_playing():
                 pass
             await message.channel.send("queue has ended!")
 
