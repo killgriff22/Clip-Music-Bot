@@ -2,7 +2,6 @@ from classes import *
 #
 #
 
-
 @user.event
 async def on_ready():
     print(f'{user.user.name} has connected to Discord!')
@@ -25,7 +24,7 @@ async def on_message(message: discord.Message):
                 length = len(f.readlines())
             await message.channel.send(f"Added {add} to statuses ({length})")
             return
-    if not message.channel.id in [1215317925049667594, 1164386048407781457]:
+    if not message.channel.id in [1215317925049667594,1164386048407781457]:
         return
     if not message.content.startswith('!'):
         return
@@ -74,8 +73,7 @@ async def on_message(message: discord.Message):
                 users[-1].search_urls = [search[i]['external_urls']['spotify']
                                          for i in range(len(search))]
                 # format the search results
-                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify']
-                                                                                  else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
+                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify']else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
                 tracks = "\n".join(tracks)
                 await message.channel.send(f'Search results for {" ".join(command[1:])}'+"\n"+tracks)
         case '!list' | '!l' | '!album' | '!a' | '!playlist' | '!pl':
@@ -87,8 +85,7 @@ async def on_message(message: discord.Message):
                         for track in album['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']
-                                                             }" for i, track in enumerate(album['tracks']['items'])]
+                        tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}" for i, track in enumerate(album['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Album {album["name"]}'+"\n"+tracks)
                     elif 'playlist' in split[1]:
@@ -97,8 +94,7 @@ async def on_message(message: discord.Message):
                         for track in playlist['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['track']['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists']
-                                                                      [0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
+                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists'][0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtu" in split[1]:
@@ -110,8 +106,7 @@ async def on_message(message: discord.Message):
                         users[-1].search_urls.append(
                             video.watch_url
                         )
-                    tracks = [f"{i} : {track.title} - {track.author}" for i,
-                              track in enumerate(playlist.videos)]
+                    tracks = [f"{i} : {track.title} - {track.author}" for i,track in enumerate(playlist.videos)]
                     tracks = "\n".join(tracks)
                     await message.channel.send(f'Playlist {playlist.title}'+"\n"+tracks)
                 elif "soundcloud" in split[1]:
@@ -148,7 +143,7 @@ async def on_message(message: discord.Message):
             vc = await voice_channel.connect()
             vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
                     source=file))
-            while vc.is_playing():
+            while vc.is_playing:
                 pass
             await message.channel.send("queue has ended!")
 
@@ -170,7 +165,6 @@ async def status():
         for i, status in enumerate(statuses.copy()):
             statuses[i] = status.strip()
     await user.change_presence(activity=Custom_listening_activity(name=random.choice(statuses)))
-
 
 @tasks.loop(seconds=10)
 async def queue_loop():
