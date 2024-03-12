@@ -42,10 +42,10 @@ Soundcloud_path = os.path.join(os.getcwd(), "Downloads/Soundcloud/")
 root = os.getcwd()
 
 def clean_exit():
-    for file in os.lsitdir(Spotify_path):
+    for file in os.listdir(Spotify_path):
         os.remove(Spotify_path+file) if "mp3" in file else None
-    for file in os.lsitdir(Youtube_path):
+    for file in os.listdir(Youtube_path):
         os.remove(Youtube_path+file) if "mp3" in file else None
-    for file in os.lsitdir(Soundcloud_path):
+    for file in os.listdir(Soundcloud_path):
         os.remove(Soundcloud_path+file) if "mp3" in file else None
 register(clean_exit)
