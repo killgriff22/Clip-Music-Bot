@@ -125,14 +125,12 @@ async def on_message(message):
         case '!play':
             if len(queue) == 0:
                 command = message.content.split(' ')
-                if "https" in command[1]:
-                    if "youtu" in command[1]:
-                        url = command[1]
-                        await message.channel.send(f"Playing {url}")
-                        author = message.author
-                        voice_channel = author.voice_channel
-                        vc = await user.join_voice_channel(voice_channel)
-                        vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg", source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
+                url = command[1]
+                await message.channel.send(f"Playing {url}")
+                author = message.author
+                voice_channel = author.voice_channel
+                vc = await user.join_voice_channel(voice_channel)
+                vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg", source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
 
 
 @tasks.loop(seconds=1)
