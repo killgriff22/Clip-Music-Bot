@@ -123,6 +123,7 @@ async def on_message(message: discord.Message):
                         break
         case '!play':
             url = split[1]
+            command = split
             if "https" in url:
                 if "spotify" in command[1]:
                     await message.channel.send(f"downloading {command[1]}")
