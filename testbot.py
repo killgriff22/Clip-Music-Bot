@@ -54,18 +54,18 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.data = data
 
         #self.uploader = data.get('uploader')
-        self.uploader_url = data.get('uploader_url')
-        date = data.get('upload_date')
-        self.upload_date = date[6:8] + '.' + date[4:6] + '.' + date[0:4]
-        self.title = data.get('title')
-        self.thumbnail = data.get('thumbnail')
-        self.description = data.get('description')
-        self.duration = self.parse_duration(int(data.get('duration')))
-        self.tags = data.get('tags')
-        self.url = data.get('webpage_url')
-        self.views = data.get('view_count')
-        self.likes = data.get('like_count')
-        self.dislikes = data.get('dislike_count')
+        #self.uploader_url = data.get('uploader_url')
+        #date = data.get('upload_date')
+        #self.upload_date = date[6:8] + '.' + date[4:6] + '.' + date[0:4]
+        #self.title = data.get('title')
+        #self.thumbnail = data.get('thumbnail')
+        #self.description = data.get('description')
+        #self.duration = self.parse_duration(int(data.get('duration')))
+        #self.tags = data.get('tags')
+        #self.url = data.get('webpage_url')
+        #self.views = data.get('view_count')
+        #self.likes = data.get('like_count')
+        #self.dislikes = data.get('dislike_count')
         self.stream_url = data.get('url')
 
     def __str__(self):
@@ -140,11 +140,9 @@ class Song:
 
     def create_embed(self):
         embed = (discord.Embed(title='Now playing',
-                               description='```css\n{0.source.title}\n```'.format(self),
                                color=discord.Color.blurple())
                  .add_field(name='Duration', value=self.source.duration)
                  .add_field(name='Requested by', value=self.requester.mention)
-                 .add_field(name='Uploader', value='[{0.source.uploader}]({0.source.uploader_url})'.format(self))
                  .add_field(name='URL', value='[Click]({0.source.url})'.format(self))
                  .set_thumbnail(url=self.source.thumbnail))
 
