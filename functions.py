@@ -11,7 +11,7 @@ async def on_ready():
 
 
 @user.event
-async def on_message(message):
+async def on_message(message: discord.Message):
     if message.author == user.user:
         return
     if message.content.startswith('!'):
@@ -124,7 +124,7 @@ async def on_message(message):
                         break
         case '!play':
             author = message.author
-            voice_channel = author.channel
+            voice_channel = message.guild.voice_channels[0]
             vc = await user.join_voice_channel(voice_channel)
             vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg",
                     source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
