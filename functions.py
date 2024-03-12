@@ -158,7 +158,7 @@ async def on_message(message: discord.Message):
             await message.channel.send(
                 embed=discord.Embed(
                     title="QUEUE",
-                    color=discord.Color.blurple,
+                    color=discord.Color.blurple(),
                     description=desc
                 )
             )
