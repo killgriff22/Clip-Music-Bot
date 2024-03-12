@@ -9,9 +9,15 @@ try:
     from ytmusicapi import YTMusic
     from pytube import YouTube, Playlist
     import random
+    import youtube_dl
+    import asyncio
+    import functools
+    import itertools
+    import math
 except ImportError:
     import os
-    os.system("pip install pytube spotdl scdl requests spotipy discord.py")
+    os.system(
+        "pip install pytube spotdl scdl requests spotipy discord.py discord.py")
     from config import *
     import discord
     import requests
@@ -21,6 +27,11 @@ except ImportError:
     from ytmusicapi import YTMusic
     from pytube import YouTube, Playlist
     import random
+    import youtube_dl
+    import asyncio
+    import functools
+    import itertools
+    import math
 users = []
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
