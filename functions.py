@@ -144,6 +144,7 @@ async def on_message(message: discord.Message):
                         Soundcloud.download_url(command[1])
                     await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
             queue.append(file)
+            print(queue)
 
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
@@ -165,13 +166,12 @@ async def status():
 
 @tasks.loop(seconds=1)
 async def queue_loop():
-    print(queue)
     while queue:
+        print(queue)
         while not vc.is_playing():
             vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
                     source=queue[0]))
         while vc.is_playing():
-            print("playing")
             await asyncio.sleep(0.1)
         os.remove(queue[0])
         queue.pop(0)
