@@ -1,7 +1,7 @@
 from classes import *
 #
 #
-
+vc = None
 @user.event
 async def on_ready():
     print(f'{user.user.name} has connected to Discord!')
@@ -12,6 +12,7 @@ async def on_ready():
 
 @user.event
 async def on_message(message: discord.Message):
+    global vc
     if message.author == user.user:
         return
     if message.content.startswith('!'):
@@ -143,10 +144,6 @@ async def on_message(message: discord.Message):
             vc = await voice_channel.connect()
             vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
                     source=file))
-            while vc.is_playing():
-                pass
-            await message.channel.send("queue has ended!")
-
 
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
@@ -168,6 +165,6 @@ async def status():
 
 @tasks.loop(seconds=10)
 async def queue_loop():
-    return
-#    if user.voice_client.is_playing():
-#        print("playing!")
+    while vc.is_playing():
+        pass
+    print("queue has ended")
