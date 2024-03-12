@@ -143,8 +143,25 @@ async def on_message(message: discord.Message):
                     file = Soundcloud_path + \
                         Soundcloud.download_url(command[1])
                     await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+            elif "cache" in url:
+                await message.channel.send("Not Implemented")
+                return
             queue.append(file)
             print(queue)
+        case '!r' | '!remove':
+            index = split[1]
+            if index.is_digit():
+                if int(index) < len(queue):
+                    queue.pop(int(index)-1 if int(index)-1 < 0 else int(index))
+        case '!queue' | '!q':
+            desc = "".join([f"{i}: {file.split('/')[-1].split('.')[0]}\n" for i,file in queue])
+            await message.channel.send(
+                embed=discord.Embed(
+                    title="QUEUE",
+                    color=discord.Color.blurple,
+                    description=desc
+                )
+            )
 
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
@@ -167,7 +184,8 @@ async def status():
 @tasks.loop(seconds=1)
 async def queue_loop():
     while queue:
-        print(queue)
+        music_channel = user.get_guild(1085995033037127750).get_channel(1164386048407781457)
+        await music_channel.send(f"Now playing {queue[0].split('/')[-1].split('.')[0]}")
         while not vc.is_playing():
             vc.play(discord.FFmpegPCMAudio(executable="/home/skye/.spotdl/ffmpeg",
                     source=queue[0]))
