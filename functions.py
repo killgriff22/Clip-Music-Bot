@@ -154,7 +154,7 @@ async def on_message(message: discord.Message):
                 if int(index) < len(queue):
                     queue.pop(int(index)-1 if int(index)-1 < 0 else int(index))
         case '!queue' | '!q':
-            desc = "".join([f"{i}: {file.split('/')[-1].split('.')[0]}\n" for i,file in queue])
+            desc = "".join([f"{i}: {file.split('/')[-1].split('.')[0]}\n" for i,file in enumerate(queue)])
             await message.channel.send(
                 embed=discord.Embed(
                     title="QUEUE",
