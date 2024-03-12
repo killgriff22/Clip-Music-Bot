@@ -132,8 +132,7 @@ async def on_message(message):
                         author = message.author
                         voice_channel = author.voice_channel
                         vc = await user.join_voice_channel(voice_channel)
-                        player = await vc.create_ytdl_player(url)
-                        player.start()
+                        vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg", source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
 
 
 @tasks.loop(seconds=1)

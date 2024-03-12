@@ -228,7 +228,7 @@ class VoiceState:
                     return
 
             self.current.source.volume = self._volume
-            self.voice.play(self.current.source, after=self.play_next_song)
+            self.voice.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg", source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
             await self.current.source.channel.send(embed=self.current.create_embed())
 
             await self.next.wait()
