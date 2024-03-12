@@ -123,14 +123,13 @@ async def on_message(message):
                         user_.timeout += 10
                         break
         case '!play':
-            if len(queue) == 0:
-                command = message.content.split(' ')
-                url = command[1]
-                await message.channel.send(f"Playing {url}")
-                author = message.author
-                voice_channel = author.voice_channel
-                vc = await user.join_voice_channel(voice_channel)
-                vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg", source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
+            author = message.author
+            voice_channel = author.voice_channel
+            vc = await user.join_voice_channel(voice_channel)
+            command = message.content.split(' ')
+            url = command[1]
+            await message.channel.send(f"Playing {url}")
+            vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg", source="Downloads/Spotify/The Living Tombstone - My Ordinary Life.mp3"))
 
 
 @tasks.loop(seconds=1)
