@@ -53,7 +53,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.channel = ctx.channel
         self.data = data
 
-        self.uploader = data.get('uploader')
+        #self.uploader = data.get('uploader')
         self.uploader_url = data.get('uploader_url')
         date = data.get('upload_date')
         self.upload_date = date[6:8] + '.' + date[4:6] + '.' + date[0:4]
