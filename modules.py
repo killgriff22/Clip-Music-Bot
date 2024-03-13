@@ -28,6 +28,9 @@ import math
 from time import sleep
 from atexit import register
 import subprocess
+discord.opus.load_opus()
+if not discord.opus.is_loaded():
+    raise RunTimeError('Opus failed to load')
 users = []
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
@@ -42,7 +45,9 @@ Youtube_path = os.path.join(os.getcwd(), "Downloads/Youtube/")
 Soundcloud_path = os.path.join(os.getcwd(), "Downloads/Soundcloud/")
 Discord_path = os.path.join(os.getcwd(), "Downloads/Discord")
 root = os.getcwd()
-ffmpeg_path = os.path.join("/".join(os.getcwd().split("/")[:3]),".spotdl/ffmpeg")
+ffmpeg_path = os.path.join(
+    "/".join(os.getcwd().split("/")[:3]), ".spotdl/ffmpeg")
+
 
 def clean_exit():
     for file in os.listdir(Spotify_path):
@@ -51,4 +56,4 @@ def clean_exit():
         os.remove(Youtube_path+file) if "mp3" in file else None
     for file in os.listdir(Soundcloud_path):
         os.remove(Soundcloud_path+file) if "mp3" in file else None
-    open("queue.txt","w").write("[]")
+    open("queue.txt", "w").write("[]")
