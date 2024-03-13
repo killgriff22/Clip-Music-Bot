@@ -30,7 +30,7 @@ from atexit import register
 import subprocess
 discord.opus.load_opus()
 if not discord.opus.is_loaded():
-    raise RunTimeError('Opus failed to load')
+    raise Exception('Opus failed to load')
 users = []
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
