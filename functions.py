@@ -126,14 +126,28 @@ async def on_message(message: discord.Message):
                         os.remove(file)
                         user_.timeout += 10
                         break
-        case '!play':
-            url = split[1]
-            command = split
-            if "https" in url:
-                subprocess.Popen(["python3","downloader.py",url])
-            elif "cache" in url:
-                await message.channel.send("Not Implemented")
-                return
+        case '!play' | '!p':
+            if len(split) >= 2:
+                url = split[1]
+                command = split
+                if "https" in url:
+                    subprocess.Popen(["python3","downloader.py",url])
+                elif "cache" in url:
+                    await message.channel.send("Not Implemented")
+                    return
+            elif message.attachments:
+                before_download = set(os.listdir(Discord_path))
+                for file in message.attachments:
+                    if "mp3" in file.filename:
+                        os.chdir(Discord_path)
+                        file.save()
+                        os.chdir(root)
+                after_download = set(os.listdir(Discord_path))
+                files = list(set(after_download) - set(before_download))
+                for i,file in enumerate(files.copy()):
+                    files[i] = os.path.join(Discord_path,file)
+                queue += files
+                open("queue.txt","w").write(str(queue))
         case '!r' | '!remove':
             index = split[1]
             if index.is_digit():

@@ -40,7 +40,9 @@ queue = eval(open("queue.txt").read())
 Spotify_path = os.path.join(os.getcwd(), "Downloads/Spotify/")
 Youtube_path = os.path.join(os.getcwd(), "Downloads/Youtube/")
 Soundcloud_path = os.path.join(os.getcwd(), "Downloads/Soundcloud/")
+Discord_path = os.path.join(os.getcwd(), "Downloads/Discord")
 root = os.getcwd()
+
 
 def clean_exit():
     for file in os.listdir(Spotify_path):
