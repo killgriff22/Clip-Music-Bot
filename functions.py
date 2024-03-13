@@ -191,7 +191,7 @@ async def queue_loop():
     while queue:
         await music_channel.send(f"Now playing {queue[0].split('/')[-1].split('.')[0]}")
         while not vc.is_playing():
-            vc.play(discord.FFmpegPCMAudio(executable="~/.spotdl/ffmpeg",
+            vc.play(discord.FFmpegPCMAudio(executable=ffmpeg_path,
                     source=queue[0]))
         while vc.is_playing():
             await asyncio.sleep(0.1)
