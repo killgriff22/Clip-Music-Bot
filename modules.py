@@ -28,9 +28,6 @@ import math
 from time import sleep
 from atexit import register
 import subprocess
-discord.opus.load_opus()
-if not discord.opus.is_loaded():
-    raise Exception('Opus failed to load')
 users = []
 spotify = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
