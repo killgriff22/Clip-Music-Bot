@@ -131,7 +131,7 @@ async def on_message(message: discord.Message):
                 url = split[1]
                 command = split
                 if "https" in url:
-                    subprocess.Popen(["python3","downloader.py",url])
+                    subprocess.Popen(["bin/python3","downloader.py",url])
                 elif "cache" in url:
                     await message.channel.send("Not Implemented")
                     return
