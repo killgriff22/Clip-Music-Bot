@@ -51,3 +51,4 @@ def clean_exit():
         os.remove(Youtube_path+file) if "mp3" in file else None
     for file in os.listdir(Soundcloud_path):
         os.remove(Soundcloud_path+file) if "mp3" in file else None
+    open("queue.txt","w").write("[]")
