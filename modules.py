@@ -10,7 +10,7 @@ try:
 except ImportError:
     import os
     os.system(
-        "pip install pytube spotdl scdl requests spotipy discord.py discord.py")
+        "pip install pytube spotdl scdl requests spotipy discord.py discord.py pynacl")
     import discord
     import requests
     from discord.ext import tasks

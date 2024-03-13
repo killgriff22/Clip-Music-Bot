@@ -8,3 +8,5 @@
 /share
 /pyvenv.cfg
 /oauth.json
+/.replit
+/replit.nix
