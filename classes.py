@@ -85,3 +85,4 @@ class Custom_listening_activity(discord.BaseActivity):
             'assets':self.kwargs.get('assets', {}),
             'details':self.kwargs.get('details', ''),
         }
+
