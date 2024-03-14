@@ -42,8 +42,11 @@ Youtube_path = os.path.join(os.getcwd(), "Downloads/Youtube/")
 Soundcloud_path = os.path.join(os.getcwd(), "Downloads/Soundcloud/")
 Discord_path = os.path.join(os.getcwd(), "Downloads/Discord")
 root = os.getcwd()
-ffmpeg_path = os.path.join(
-    "/".join(os.getcwd().split("/")[:3]), ".spotdl/ffmpeg")
+if configffmpeg_path:
+    ffmpeg_path = configffmpeg_path
+else:
+    ffmpeg_path = os.path.join(
+        "/".join(os.getcwd().split("/")[:3]), ".spotdl/ffmpeg")
 
 
 def clean_exit():
