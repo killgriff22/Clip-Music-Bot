@@ -177,7 +177,7 @@ async def on_message(message: discord.Message):
                     description=desc
                 )
             )
-        case '!pause':
+        case '!pause' | '!paws':
             if not paused:
                 vc.pause()
                 paused = True
