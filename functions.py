@@ -22,19 +22,23 @@ async def on_ready():
 
 @user.event
 async def on_message(message: discord.Message):
-    global vc, queue,paused
+    global vc, queue, paused, loop
     if message.author == user.user:
         return
     if message.content.startswith('!'):
-        if any(cmd in message.content for cmd in ['!status', '!s']):
-            split = message.content.split(' ')
-            with open('statuses.txt', 'a') as f:
-                add = ' '.join(split[1:])
-                f.write(f"{add}\n")
-            with open('statuses.txt', 'r') as f:
-                length = len(f.readlines())
-            await message.channel.send(f"Added {add} to statuses ({length})")
-            return
+        for _ in [""]: #allow me to skip this entire chunk of code if i try to stop the queue
+            if any(cmd in message.content for cmd in ['!status', '!s']):
+                if "!s" in message.content:
+                    if "!stop" in message.content:
+                        break
+                split = message.content.split(' ')
+                with open('statuses.txt', 'a') as f:
+                    add = ' '.join(split[1:])
+                    f.write(f"{add}\n")
+                with open('statuses.txt', 'r') as f:
+                    length = len(f.readlines())
+                await message.channel.send(f"Added {add} to statuses ({length})")
+                return
     if not message.channel.id in [1215317925049667594, 1164386048407781457]:
         return
     if not message.content.startswith('!'):
@@ -135,6 +139,7 @@ async def on_message(message: discord.Message):
                         user_.timeout += 10
                         break
         case '!play' | '!p':
+            paused = False
             if len(split) >= 2:
                 url = split[1]
                 command = split
@@ -187,13 +192,16 @@ async def on_message(message: discord.Message):
             if paused:
                 vc.resume()
                 paused = False
-        case '!stop' | '!end':
-            vc.stop()
-        case '!c' | '!clear':
+        case '!c' | '!clear' | '!stop' | '!end':
             vc.stop()
             queue = []
             update_queue()
-
+        case '!skip' | '!next':
+            vc.stop()
+            queue.pop(0)
+        case '!loop' | '!l':
+            loop = not loop
+            await message.reply(f"loop {'on' if loop else 'off'}")
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
     for user_ in users.copy():
@@ -228,8 +236,12 @@ async def queue_loop():
                     source=queue[0]))
         while vc.is_playing():
             await asyncio.sleep(0.1)
-        os.remove(queue[0])
-        queue.pop(0)
-        update_queue()
+        if not loop:
+            os.remove(queue[0])
+            queue.pop(0)
+            update_queue()
+        else:
+            queue.append(queue.pop(0))
+            update_queue()
     if not paused:
         await music_channel.send("Queue has ended")

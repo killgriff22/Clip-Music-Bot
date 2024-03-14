@@ -36,6 +36,7 @@ spotify = spotipy.Spotify(
     )
 )
 paused = False
+loop = False
 user = discord.Client(intents=discord.Intents.all())
 queue = eval(open("queue.txt").read())
 Spotify_path = os.path.join(os.getcwd(), "Downloads/Spotify/")
