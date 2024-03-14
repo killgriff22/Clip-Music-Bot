@@ -142,7 +142,7 @@ async def on_message(message: discord.Message):
                 os.chdir(Discord_path)
                 for file in message.attachments:
                     if "mp3" in file.filename:
-                        file.save(".")
+                        await file.save(".")
                 os.chdir(root)
                 after_download = set(os.listdir(Discord_path))
                 files = list(set(after_download) - set(before_download))
