@@ -136,12 +136,14 @@ async def on_message(message: discord.Message):
                     await message.channel.send("Not Implemented")
                     return
             elif message.attachments:
+                if not any("mp3" in file.filename for file in message.attachments):
+                    return
                 before_download = set(os.listdir(Discord_path))
+                os.chdir(Discord_path)
                 for file in message.attachments:
                     if "mp3" in file.filename:
-                        os.chdir(Discord_path)
                         file.save()
-                        os.chdir(root)
+                os.chdir(root)
                 after_download = set(os.listdir(Discord_path))
                 files = list(set(after_download) - set(before_download))
                 for i,file in enumerate(files.copy()):
