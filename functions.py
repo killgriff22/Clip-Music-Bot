@@ -15,7 +15,7 @@ async def on_ready():
 
 @user.event
 async def on_message(message: discord.Message):
-    global vc
+    global vc, queue
     if message.author == user.user:
         return
     if message.content.startswith('!'):
@@ -148,7 +148,7 @@ async def on_message(message: discord.Message):
                 files = list(set(after_download) - set(before_download))
                 for i,file in enumerate(files.copy()):
                     files[i] = os.path.join(Discord_path,file)
-                queue += files
+                queue+=files
                 open("queue.txt","w").write(str(queue))
         case '!r' | '!remove':
             index = split[1]
