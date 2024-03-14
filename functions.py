@@ -29,7 +29,7 @@ async def on_message(message: discord.Message):
         for _ in [""]: #allow me to skip this entire chunk of code if i try to stop the queue
             if any(cmd in message.content for cmd in ['!status', '!s']):
                 if "!s" in message.content:
-                    if "!stop" in message.content:
+                    if any(cmd in message.content for cmd in ['!stop', '!skip']):
                         break
                 split = message.content.split(' ')
                 with open('statuses.txt', 'a') as f:
