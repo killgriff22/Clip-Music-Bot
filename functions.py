@@ -178,8 +178,13 @@ async def on_message(message: discord.Message):
                 )
             )
         case '!pause':
-            vc.pause()
-            paused = True
+            if not paused:
+                vc.pause()
+                paused = True
+        case '!resume' | '!res':
+            if paused:
+                vc.resume()
+                paused = False
 
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
