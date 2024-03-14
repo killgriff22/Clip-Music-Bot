@@ -3,6 +3,11 @@ from classes import *
 #
 vc: discord.voice_client.VoiceClient | None = None
 
+def update_queue():
+    open("queue.txt", "w").write(str(queue))
+
+def read_queue():
+    return eval(open("queue.txt").read())
 
 @user.event
 async def on_ready():
@@ -155,7 +160,7 @@ async def on_message(message: discord.Message):
                 for i, file in enumerate(files.copy()):
                     files[i] = os.path.join(Discord_path, file)
                 queue += files
-                open("queue.txt", "w").write(str(queue))
+                update_queue()
             elif paused:
                 vc.resume()
                 paused = False
@@ -182,6 +187,12 @@ async def on_message(message: discord.Message):
             if paused:
                 vc.resume()
                 paused = False
+        case '!stop' | '!end':
+            vc.stop()
+        case '!c' | '!clear':
+            vc.stop()
+            queue = []
+            update_queue()
 
 @tasks.loop(seconds=1)
 async def user_prompt_timeout():
@@ -205,7 +216,7 @@ async def status():
 @tasks.loop(seconds=1)
 async def queue_loop():
     global queue
-    queue = eval(open("queue.txt").read())
+    queue = read_queue()
     if not queue:
         return
     music_channel = user.get_guild(
@@ -219,5 +230,6 @@ async def queue_loop():
             await asyncio.sleep(0.1)
         os.remove(queue[0])
         queue.pop(0)
-        open("queue.txt", "w").write(str(queue))
-    await music_channel.send("Queue has ended")
+        update_queue()
+    if not paused:
+        await music_channel.send("Queue has ended")
