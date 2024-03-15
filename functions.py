@@ -137,6 +137,14 @@ async def on_message(message: discord.Message):
         case '!join' | '!j':
             if vc:
                 await vc.disconnect()
+            if len(split) == 2:
+                match split[1]:
+                    case '2':
+                        vc = await message.guild.get_channel(1088131367587565628).connect()
+                    case '1':
+                        vc = await message.guild.get_channel(1170801016577458278).connect()
+                    case _:
+                        vc = await message.author.voice.channel.connect()
             vc = await message.author.voice.channel.connect()
     if not vc:
         return
@@ -205,7 +213,7 @@ async def on_message(message: discord.Message):
             elif paused:
                 vc.resume()
                 paused = False
-        case '!discornnet' | '!dc':
+        case '!disconnect' | '!dc':
             await vc.disconnect()
             vc = None
 @tasks.loop(seconds=1)
