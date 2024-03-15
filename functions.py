@@ -136,7 +136,7 @@ async def on_message(message: discord.Message):
                         break
         case '!join' | '!j':
             if vc:
-                vc.disconnect()
+                await vc.disconnect()
             vc = await message.author.voice.channel.connect()
     if not vc:
         return
@@ -206,7 +206,7 @@ async def on_message(message: discord.Message):
                 vc.resume()
                 paused = False
         case '!discornnet' | '!d':
-            vc.disconnect()
+            await vc.disconnect()
             vc = None
 @tasks.loop(seconds=1)
 async def user_prompt_timeout(): #Controls user prompt timeouts...
