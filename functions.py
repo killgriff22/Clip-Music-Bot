@@ -15,7 +15,7 @@ async def on_ready():
     print(f'{user.user.name} has connected to Discord!')
     user_prompt_timeout.start()
     status.start()
-    voice_channel = user.get_guild(1085995033037127750).voice_channels[0]
+    voice_channel = user.get_guild(1085995033037127750).get_channel(1088131367587565628)
     vc = await voice_channel.connect()
     queue_loop.start()
 
@@ -205,7 +205,7 @@ async def on_message(message: discord.Message):
             elif paused:
                 vc.resume()
                 paused = False
-        case '!discornnet' | '!d':
+        case '!discornnet' | '!dc':
             await vc.disconnect()
             vc = None
 @tasks.loop(seconds=1)
