@@ -135,6 +135,8 @@ async def on_message(message: discord.Message):
                         user_.timeout += 10
                         break
         case '!join' | '!j':
+            if vc:
+                vc.disconnect()
             vc = await message.author.voice.channel.connect()
     if not vc:
         return
