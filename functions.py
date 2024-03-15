@@ -49,20 +49,26 @@ async def on_message(message: discord.Message):
             command = message.content.split(' ')
             if "https" in command[1]:  # Given a link
                 if "spotify" in command[1]:
-                    await message.channel.send(f"downloading {command[1]}")
+                    msg = await message.channel.send(f"downloading {command[1]}")
+                    msg.embeds.clear()
                     file = Spotify_path + Spotify.download_url(command[1])
-                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                    msg = await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                    msg.embeds.clear()
                     os.remove(file)
                 elif "youtu" in command[1]:
-                    await message.channel.send(f"downloading {command[1]}")
+                    msg = await message.channel.send(f"downloading {command[1]}")
+                    msg.embeds.clear()
                     file = Youtube_path + Youtube.download_url(command[1])
-                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                    msg = await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                    msg.embeds.clear()
                     os.remove(file)
                 elif "soundcloud" in command[1]:
-                    await message.channel.send(f"downloading {command[1]}")
+                    msg = await message.channel.send(f"downloading {command[1]}")
+                    msg.embeds.clear()
                     file = Soundcloud_path + \
                         Soundcloud.download_url(command[1])
-                    await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                    msg = await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
+                    msg.embeds.clear()
                     os.remove(file)
             elif command[1].isdigit():  # Given a number, assume we want to select from a list
                 for user_ in users.copy():
