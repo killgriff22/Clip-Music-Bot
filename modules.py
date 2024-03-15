@@ -53,11 +53,11 @@ else:
 
 def clean_exit():
     for file in os.listdir(Spotify_path):
-        os.remove(os.path.join(Spotify_path,file)) if "mp3" in file else None
+        os.remove(os.path.join(Spotify_path,file)) if "mp" in file else None
     for file in os.listdir(Youtube_path):
-        os.remove(os.path.join(Youtube_path,file)) if "mp3" in file else None
+        os.remove(os.path.join(Youtube_path,file)) if "mp" in file else None
     for file in os.listdir(Soundcloud_path):
-        os.remove(os.path.join(Soundcloud_path,file)) if "mp3" in file else None
+        os.remove(os.path.join(Soundcloud_path,file)) if "mp" in file else None
     for file in os.listdir(Discord_path):
-        os.remove(os.path.join(Discord_path,file)) if "mp3" in file else None
+        os.remove(os.path.join(Discord_path,file)) if "mp" in file else None
     open("queue.txt", "w").write("[]")

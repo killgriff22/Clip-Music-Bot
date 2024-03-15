@@ -23,7 +23,7 @@ class Youtube:
         video.streams.filter(only_audio=True).first().download()
         after_download = os.listdir(Youtube_path)
         filename = list(set(after_download) - set(before_download))[0]
-        subprocess.Popen([f"{ffmpeg_path}", "-i", f"{filename}", "-vn", "-ab", "128k", "-ar", "44100", "-y", f"{filename[:-4]}.mp3"],stdout=subprocess.DEVNULL)
+        subprocess.Popen([f"{ffmpeg_path}", "-i", f"{filename}", "-vn", "-ab", "128k", "-ar", "44100", "-y", f"{filename[:-4]}.mp3"])#,stdout=subprocess.DEVNULL)
         os.remove(filename)
         os.chdir(root)
         after_download = os.listdir(Youtube_path)
