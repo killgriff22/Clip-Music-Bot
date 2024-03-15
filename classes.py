@@ -7,7 +7,7 @@ class Spotify:
         before_download = os.listdir(Spotify_path)
         print(f"downloading {url}")
         os.chdir(Spotify_path)
-        os.system(f"bin/spotdl {url}")
+        os.system(f"./bin/spotdl {url}")
         os.chdir(os.path.join(os.getcwd(), root))
         after_download = os.listdir(Spotify_path)
         filename = list(set(after_download) - set(before_download))[0]
@@ -37,7 +37,7 @@ class Soundcloud:
         before_download = os.listdir(Soundcloud_path)
         print(f"downloading {url}")
         os.chdir(Soundcloud_path)
-        os.system(f"bin/scdl -l {url}")
+        os.system(f"./bin/scdl -l {url}")
         os.chdir(root)
         after_download = os.listdir(Soundcloud_path)
         filename = list(set(after_download) - set(before_download))[0]
