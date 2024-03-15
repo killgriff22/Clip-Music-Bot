@@ -48,7 +48,6 @@ async def on_message(message: discord.Message):
         case '!download' | '!d':
             command = message.content.split(' ')
             if "https" in command[1]:  # Given a link
-                await message.edit(suppress=True)
                 msg = await message.channel.send(f"downloading {command[1]}")
                 await msg.edit(suppress=True)
                 if "spotify" in command[1]:
