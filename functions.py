@@ -270,6 +270,7 @@ async def queue_loop(): #manages the queue
 
 @user.event
 async def on_voice_state_update(member, before, after):
+    return
     global vc
     music_channel = user.get_guild(
         1085995033037127750).get_channel(1164386048407781457)
