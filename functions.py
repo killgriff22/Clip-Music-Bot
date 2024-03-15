@@ -267,3 +267,17 @@ async def queue_loop(): #manages the queue
             queue.append(queue.pop(0))
             update_queue()
     await music_channel.send("Queue has ended") #when the queue is empty, say it!
+
+@user.event
+async def on_voice_state_update(member, before, after):
+    global vc
+    music_channel = user.get_guild(
+        1085995033037127750).get_channel(1164386048407781457)
+    if after.channel is None and member==user.user:
+        await music_channel.send("Bot has been Disconnected")
+        vc=None
+    elif after.channel is not None and member==user.user:
+        await vc.disconnect()
+        await after.channel.disconnect()
+        vc = await after.channel.connect()
+        await music_channel.send(f"Bot has moved to {after.channel.name}")
