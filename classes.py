@@ -24,8 +24,6 @@ class Youtube:
         after_download = os.listdir(Youtube_path)
         filename = list(set(after_download) - set(before_download))[0]
         process = subprocess.Popen([f"{ffmpeg_path}", "-i", f"{filename}", "-vn", "-ab", "128k", "-ar", "44100", "-y", f"{filename[:-4]}.mp3"],stdout=subprocess.DEVNULL)
-        while not process.poll():
-            pass
         os.remove(filename)
         os.chdir(root)
         after_download = os.listdir(Youtube_path)
