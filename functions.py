@@ -23,28 +23,29 @@ async def on_ready():
 @user.event
 async def on_message(message: discord.Message):
     global vc, queue, paused, loop
-    if message.author == user.user:
+    if message.author == user.user: # dont respond to our own messages
         return
-    if message.content.startswith('!'):
-        for _ in [""]: #allow me to skip this entire chunk of code if i try to stop the queue
-            if any(cmd in message.content for cmd in ['!status', '!s']):
-                if "!s" in message.content:
-                    if any(cmd in message.content for cmd in ['!stop', '!skip']):
-                        break
-                split = message.content.split(' ')
-                with open('statuses.txt', 'a') as f:
-                    add = ' '.join(split[1:])
-                    f.write(f"{add}\n")
-                with open('statuses.txt', 'r') as f:
-                    length = len(f.readlines())
-                await message.channel.send(f"Added {add} to statuses ({length})")
-                return
-    if not message.channel.id in [1215317925049667594, 1164386048407781457]:
+    if not message.content.startswith('!'): # check for the prefix
         return
-    if not message.content.startswith('!'):
+    #this next chunk of code does some file fuckery and adds a status
+    #one of the aliases for this command is !s. why? Dont ask me! i just work here!
+    for _ in [""]: #allows me to skip this entire chunk of code if i try to stop the queue
+        if any(cmd in message.content for cmd in ['!status', '!s']):
+            if "!s" in message.content:
+                if any(cmd in message.content for cmd in ['!stop', '!skip']):
+                    break
+            split = message.content.split(' ')
+            with open('statuses.txt', 'a') as f:
+                add = ' '.join(split[1:])
+                f.write(f"{add}\n")
+            with open('statuses.txt', 'r') as f:
+                length = len(f.readlines())
+            await message.channel.send(f"Added {add} to statuses ({length})")
+            return
+    if not message.channel.id in [1215317925049667594, 1164386048407781457]: # this bot runs in a server with my friends and thats it, i dont want to clog chat so i whitlelist 2 channels
         return
     split = message.content.split(' ')
-    match split[0]:
+    match split[0]: #Downloading & Playlists & join command
         case '!download' | '!d':
             command = message.content.split(' ')
             if "https" in command[1]:  # Given a link
@@ -133,37 +134,11 @@ async def on_message(message: discord.Message):
                         os.remove(file)
                         user_.timeout += 10
                         break
-        case '!play' | '!p':
-            paused = False
-            if len(split) >= 2:
-                url = split[1]
-                command = split
-                if "https" in url:
-                    subprocess.Popen(["bin/python3", "downloader.py", url])
-                elif "cache" in url:
-                    await message.channel.send("Not Implemented")
-                    return
-            elif message.attachments:
-                if not any("mp3" in file.filename for file in message.attachments):
-                    return
-                before_download = set(os.listdir(Discord_path))
-                os.chdir(Discord_path)
-                for file in message.attachments:
-                    if "mp3" in file.filename:
-                        if not file.filename in before_download:
-                            await file.save(file.filename)
-                        else:
-                            files.append(file.filename)
-                os.chdir(root)
-                after_download = set(os.listdir(Discord_path))
-                files = list(set(after_download) - set(before_download))
-                for i, file in enumerate(files.copy()):
-                    files[i] = os.path.join(Discord_path, file)
-                queue += files
-                update_queue()
-            elif paused:
-                vc.resume()
-                paused = False
+        case '!join' | '!j':
+            vc = await message.author.voice.channel.connect()
+    if not vc:
+        return
+    match split[0]: #Music Bot Commands. Dependent on a active voice channel.
         case '!r' | '!remove':
             index = split[1]
             if index.is_digit():
@@ -197,8 +172,42 @@ async def on_message(message: discord.Message):
         case '!loop' | '!l':
             loop = not loop
             await message.reply(f"loop {'on' if loop else 'off'}")
+        case '!play' | '!p':
+            paused = False
+            if len(split) >= 2:
+                url = split[1]
+                command = split
+                if "https" in url:
+                    subprocess.Popen(["bin/python3", "downloader.py", url])
+                elif "cache" in url:
+                    await message.channel.send("Not Implemented")
+                    return
+            elif message.attachments:
+                if not any("mp3" in file.filename for file in message.attachments):
+                    return
+                before_download = set(os.listdir(Discord_path))
+                os.chdir(Discord_path)
+                for file in message.attachments:
+                    if "mp3" in file.filename:
+                        if not file.filename in before_download:
+                            await file.save(file.filename)
+                        else:
+                            files.append(file.filename)
+                os.chdir(root)
+                after_download = set(os.listdir(Discord_path))
+                files = list(set(after_download) - set(before_download))
+                for i, file in enumerate(files.copy()):
+                    files[i] = os.path.join(Discord_path, file)
+                queue += files
+                update_queue()
+            elif paused:
+                vc.resume()
+                paused = False
+        case '!discornnet' | '!d':
+            vc.disconnect()
+            vc = None
 @tasks.loop(seconds=1)
-async def user_prompt_timeout():
+async def user_prompt_timeout(): #Controls user prompt timeouts...
     for user_ in users.copy():
         if user_.timeout > 0:
             user_.timeout -= 1
@@ -208,7 +217,7 @@ async def user_prompt_timeout():
 
 
 @tasks.loop(seconds=20)
-async def status():
+async def status(): # manages the random status
     with open('statuses.txt', 'r') as f:
         statuses = f.readlines()
         for i, status in enumerate(statuses.copy()):
@@ -217,26 +226,32 @@ async def status():
 
 
 @tasks.loop(seconds=1)
-async def queue_loop():
+async def queue_loop(): #manages the queue
+    if not vc: #dont run any of this if vc is None
+        return
+    if paused:# if the pause flag is set, pause the stream, the always return until unpaused
+        if vc.is_playing():
+            vc.pause()
+        else:
+            return
     global queue
     queue = read_queue()
-    if not queue:
+    if not queue:# if the queue is empty, do nothing
         return
     music_channel = user.get_guild(
         1085995033037127750).get_channel(1164386048407781457)
-    while queue:
+    while queue:#while we have a queue, play the first item from the queue
         await music_channel.send(f"Now playing {queue[0].split('/')[-1].split('.')[0]}")
-        while not vc.is_playing():
+        while not vc.is_playing():#repeatedly try to play the song
             vc.play(discord.FFmpegPCMAudio(executable=ffmpeg_path,
                     source=queue[0]))
-        while vc.is_playing():
+        while vc.is_playing():#wait until the song finishes
             await asyncio.sleep(0.1)
-        if not loop:
+        if not loop:# if we arent looping, remove the file, and the entry, then update the queue file
             os.remove(queue[0])
             queue.pop(0)
             update_queue()
-        else:
+        else:# otherwise, send the firs item to the back and update the queue file
             queue.append(queue.pop(0))
             update_queue()
-    if not paused:
-        await music_channel.send("Queue has ended")
+    await music_channel.send("Queue has ended") #when the queue is empty, say it!
