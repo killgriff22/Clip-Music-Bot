@@ -13,4 +13,4 @@ elif "soundcloud" in args[1]:
 print(os.getcwd())
 print(file)
 queue.append(file)
-update_queue()
+update_queue(queue)
