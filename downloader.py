@@ -3,6 +3,7 @@ import os
 from functions import *
 args = sys.argv
 queue = read_queue()
+print(os.getcwd())
 if "spotify" in args[1]:
     file = Spotify_path + Spotify.download_url(args[1])
 elif "youtu" in args[1]:
