@@ -3,7 +3,7 @@ from classes import *
 #
 vc: discord.voice_client.VoiceClient | None = None
 
-def update_queue():
+def update_queue(queue=queue):
     open("queue.txt", "w").write(str(queue))
 
 def read_queue():

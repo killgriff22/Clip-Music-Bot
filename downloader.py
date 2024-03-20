@@ -11,5 +11,6 @@ elif "youtu" in args[1]:
 elif "soundcloud" in args[1]:
     file = Soundcloud_path + Soundcloud.download_url(args[1])
 print(os.getcwd())
+print(file)
 queue.append(file)
 update_queue()
