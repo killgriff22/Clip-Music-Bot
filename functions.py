@@ -18,6 +18,7 @@ async def on_ready():
     voice_channel = user.get_guild(1085995033037127750).get_channel(1088131367587565628)
     vc = await voice_channel.connect()
     queue_loop.start()
+    instance_loop.start()
 
 
 @user.event
