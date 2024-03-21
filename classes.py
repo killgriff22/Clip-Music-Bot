@@ -93,7 +93,7 @@ class Instance(subprocess.Popen):
         command = ["bin/python3","downloader.py",url]
         if queue:
             command.append("queue") 
-        super().__init__(command,stdout=subprocess.PIPE,stderr=subprocess.PIPE,stdin=subprocess.PIPE,universal_newlines=True,shell=True)
+        super().__init__(command)
         self.content = message.content
         self.author = message.author
         self.channel = message.channel
