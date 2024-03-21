@@ -268,4 +268,3 @@ async def instance_loop():
                 for file in files:
                     if "mp3" in file:
                         await user.get_guild(1085995033037127750).get_channel(1164386048407781457).send(files=[discord.File(os.path.join(root, file))])
-                        os.remove(os.path.join(root, file))
