@@ -260,7 +260,7 @@ async def instance_loop():
         instance:Instance = instance
         if instance.poll() == None:
             print("Instance finished")
-            downloader_instances.remove(instance)
+            instances.remove(instance)
             msg = await instance.channel.send(f"Downloaded {instance.url}")
             msg.edit(suppress=True)
     #os.walk through the downloads folder and send all mp3s to the music channel
