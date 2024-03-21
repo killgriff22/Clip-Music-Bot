@@ -79,7 +79,7 @@ async def on_message(message: discord.Message):
                                                                                   else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
                 tracks = "\n".join(tracks)
                 await message.channel.send(f'Search results for {" ".join(command[1:])}'+"\n"+tracks)
-        case '!list' | '!l' | '!album' | '!a' | '!playlist' | '!pl':
+        case '!list' | '!album' | '!a' | '!playlist' | '!pl':
             if "https" in split[1]:
                 if "spotify" in split[1]:
                     if 'album' in split[1]:
@@ -88,8 +88,7 @@ async def on_message(message: discord.Message):
                         for track in album['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']
-                                                             }" for i, track in enumerate(album['tracks']['items'])]
+                        tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}" for i, track in enumerate(album['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Album {album["name"]}'+"\n"+tracks)
                     elif 'playlist' in split[1]:
@@ -98,8 +97,7 @@ async def on_message(message: discord.Message):
                         for track in playlist['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['track']['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists']
-                                                                      [0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
+                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists'][0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtu" in split[1]:
@@ -111,8 +109,7 @@ async def on_message(message: discord.Message):
                         users[-1].search_urls.append(
                             video.watch_url
                         )
-                    tracks = [f"{i} : {track.title} - {track.author}" for i,
-                              track in enumerate(playlist.videos)]
+                    tracks = [f"{i} : {track.title} - {track.author}" for i,track in enumerate(playlist.videos)]
                     tracks = "\n".join(tracks)
                     await message.channel.send(f'Playlist {playlist.title}'+"\n"+tracks)
                 elif "soundcloud" in split[1]:
