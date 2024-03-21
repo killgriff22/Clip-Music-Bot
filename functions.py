@@ -258,6 +258,7 @@ async def instance_loop():
     for instance in downloader_instances.copy():
         instance:Instance = instance
         if instance.poll() != None:
+            print("Instance finished")
             downloader_instances.remove(instance)
             msg = await instance.channel.send(f"Downloaded {instance.url}")
             msg.edit(suppress=True)
