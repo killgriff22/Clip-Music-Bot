@@ -262,10 +262,10 @@ async def instance_loop():
             print("Instance finished")
             instances.remove(instance)
             msg = await instance.channel.send(f"Downloaded {instance.url}")
-            msg.edit(suppress=True)
+            await msg.edit(suppress=True)
     #os.walk through the downloads folder and send all mp3s to the music channel
-    for root, dirs, files in os.walk("Downloads"):
-        for file in files:
-            if "mp3" in file:
-                await user.get_guild(1085995033037127750).get_channel(1164386048407781457).send(file, files=[discord.File(os.path.join(root, file))])
-                os.remove(os.path.join(root, file))
+            for root, dirs, files in os.walk("Downloads"):
+                for file in files:
+                    if "mp3" in file:
+                        await user.get_guild(1085995033037127750).get_channel(1164386048407781457).send(files=[discord.File(os.path.join(root, file))])
+                        os.remove(os.path.join(root, file))
