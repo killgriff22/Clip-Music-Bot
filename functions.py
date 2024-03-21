@@ -258,7 +258,7 @@ async def instance_loop():
     global instances
     for instance in instances.copy():
         instance:Instance = instance
-        if instance.poll() == None:
+        if instance.poll() != None:
             print("Instance finished")
             instances.remove(instance)
             msg = await instance.channel.send(f"Downloaded {instance.url}")
