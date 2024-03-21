@@ -3,11 +3,15 @@ from classes import *
 #
 vc: discord.voice_client.VoiceClient | None = None
 instances = []
+
+
 def update_queue(queue=queue):
     open("queue.txt", "w").write(str(queue))
 
+
 def read_queue():
     return eval(open("queue.txt").read())
+
 
 @user.event
 async def on_ready():
@@ -15,7 +19,8 @@ async def on_ready():
     print(f'{user.user.name} has connected to Discord!')
     user_prompt_timeout.start()
     status.start()
-    voice_channel = user.get_guild(1085995033037127750).get_channel(1088131367587565628)
+    voice_channel = user.get_guild(
+        1085995033037127750).get_channel(1088131367587565628)
     vc = await voice_channel.connect()
     queue_loop.start()
     instance_loop.start()
@@ -24,13 +29,13 @@ async def on_ready():
 @user.event
 async def on_message(message: discord.Message):
     global vc, queue, paused, loop
-    if message.author == user.user: # dont respond to our own messages
+    if message.author == user.user:  # dont respond to our own messages
         return
-    if not message.content.startswith('!'): # check for the prefix
+    if not message.content.startswith('!'):  # check for the prefix
         return
-    #this next chunk of code does some file fuckery and adds a status
-    #one of the aliases for this command is !s. why? Dont ask me! i just work here!
-    for _ in [""]: #allows me to skip this entire chunk of code if i try to stop the queue
+    # this next chunk of code does some file fuckery and adds a status
+    # one of the aliases for this command is !s. why? Dont ask me! i just work here!
+    for _ in [""]:  # allows me to skip this entire chunk of code if i try to stop the queue
         if any(cmd in message.content for cmd in ['!status', '!s']):
             if "!s" in message.content:
                 if any(cmd in message.content for cmd in ['!stop', '!skip']):
@@ -43,10 +48,11 @@ async def on_message(message: discord.Message):
                 length = len(f.readlines())
             await message.channel.send(f"Added {add} to statuses ({length})")
             return
-    if not message.channel.id in [1215317925049667594, 1164386048407781457]: # this bot runs in a server with my friends and thats it, i dont want to clog chat so i whitlelist 2 channels
+    # this bot runs in a server with my friends and thats it, i dont want to clog chat so i whitlelist 2 channels
+    if not message.channel.id in [1215317925049667594, 1164386048407781457]:
         return
     split = message.content.split(' ')
-    match split[0]: #Downloading & Playlists & join command
+    match split[0]:  # Downloading & Playlists & join command
         case '!download' | '!d':
             command = message.content.split(' ')
             if "https" in command[1]:  # Given a link
@@ -69,7 +75,8 @@ async def on_message(message: discord.Message):
                 users[-1].search_urls = [search[i]['external_urls']['spotify']
                                          for i in range(len(search))]
                 # format the search results
-                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify'] else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
+                tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}{f' - album' if 'album' in track['external_urls']['spotify']
+                                                                                  else f' - playlist' if 'playlist' in track['external_urls']['spotify'] else ''}" for i, track in enumerate(search)]
                 tracks = "\n".join(tracks)
                 await message.channel.send(f'Search results for {" ".join(command[1:])}'+"\n"+tracks)
         case '!list' | '!l' | '!album' | '!a' | '!playlist' | '!pl':
@@ -81,7 +88,8 @@ async def on_message(message: discord.Message):
                         for track in album['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']}" for i, track in enumerate(album['tracks']['items'])]
+                        tracks = [f"{i} : {track['name']} - {track['artists'][0]['name']
+                                                             }" for i, track in enumerate(album['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Album {album["name"]}'+"\n"+tracks)
                     elif 'playlist' in split[1]:
@@ -90,7 +98,8 @@ async def on_message(message: discord.Message):
                         for track in playlist['tracks']['items']:
                             users[-1].search_urls.append(
                                 track['track']['external_urls']['spotify'])
-                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists'][0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
+                        tracks = [f"{i} : {track['track']['name']} - {track['track']['artists']
+                                                                      [0]['name']}" for i, track in enumerate(playlist['tracks']['items'])]
                         tracks = "\n".join(tracks)
                         await message.channel.send(f'Playlist {playlist["name"]}'+"\n"+tracks)
                 elif "youtu" in split[1]:
@@ -135,7 +144,7 @@ async def on_message(message: discord.Message):
             vc = await message.author.voice.channel.connect()
     if not vc:
         return
-    match split[0]: #Music Bot Commands. Dependent on a active voice channel.
+    match split[0]:  # Music Bot Commands. Dependent on a active voice channel.
         case '!r' | '!remove':
             index = split[1]
             if index.is_digit():
@@ -203,8 +212,10 @@ async def on_message(message: discord.Message):
         case '!disconnect' | '!dc':
             await vc.disconnect()
             vc = None
+
+
 @tasks.loop(seconds=1)
-async def user_prompt_timeout(): #Controls user prompt timeouts...
+async def user_prompt_timeout():  # Controls user prompt timeouts...
     for user_ in users.copy():
         if user_.timeout > 0:
             user_.timeout -= 1
@@ -214,7 +225,7 @@ async def user_prompt_timeout(): #Controls user prompt timeouts...
 
 
 @tasks.loop(seconds=20)
-async def status(): # manages the random status
+async def status():  # manages the random status
     with open('statuses.txt', 'r') as f:
         statuses = f.readlines()
         for i, status in enumerate(statuses.copy()):
@@ -223,48 +234,52 @@ async def status(): # manages the random status
 
 
 @tasks.loop(seconds=1)
-async def queue_loop(): #manages the queue
-    if not vc: #dont run any of this if vc is None
+async def queue_loop():  # manages the queue
+    if not vc:  # dont run any of this if vc is None
         return
-    if paused:# if the pause flag is set, pause the stream, the always return until unpaused
+    if paused:  # if the pause flag is set, pause the stream, the always return until unpaused
         if vc.is_playing():
             vc.pause()
         else:
             return
     global queue
     queue = read_queue()
-    if not queue:# if the queue is empty, do nothing
+    if not queue:  # if the queue is empty, do nothing
         return
     music_channel = user.get_guild(
         1085995033037127750).get_channel(1164386048407781457)
-    while queue:#while we have a queue, play the first item from the queue
+    while queue:  # while we have a queue, play the first item from the queue
         await music_channel.send(f"Now playing {queue[0].split('/')[-1].split('.')[0]}")
-        while not vc.is_playing():#repeatedly try to play the song
+        while not vc.is_playing():  # repeatedly try to play the song
             vc.play(discord.FFmpegPCMAudio(executable=ffmpeg_path,
                     source=queue[0]))
-        while vc.is_playing():#wait until the song finishes
+        while vc.is_playing():  # wait until the song finishes
             await asyncio.sleep(0.1)
-        if not loop:# if we arent looping, remove the file, and the entry, then update the queue file
+        if not loop:  # if we arent looping, remove the file, and the entry, then update the queue file
             os.remove(queue[0])
             queue.pop(0)
             update_queue()
-        else:# otherwise, send the firs item to the back and update the queue file
+        else:  # otherwise, send the firs item to the back and update the queue file
             queue.append(queue.pop(0))
             update_queue()
-    await music_channel.send("Queue has ended") #when the queue is empty, say it!
+    # when the queue is empty, say it!
+    await music_channel.send("Queue has ended")
+
 
 @tasks.loop(seconds=4)
 async def instance_loop():
     global instances
     for instance in instances.copy():
-        instance:Instance = instance
+        instance: Instance = instance
         if instance.poll() != None:
             print("Instance finished")
             instances.remove(instance)
             msg = await instance.channel.send(f"Downloaded {instance.url}")
             await msg.edit(suppress=True)
-    #os.walk through the downloads folder and send all mp3s to the music channel
+    # os.walk through the downloads folder and send all mp3s to the music channel
             for root, dirs, files in os.walk("Downloads"):
                 for file in files:
                     if "mp3" in file:
-                        await user.get_guild(1085995033037127750).get_channel(1164386048407781457).send(files=[discord.File(os.path.join(root, file))])
+                        await instance.channel.send(files=[discord.File(os.path.join(root, file))])
+                        os.remove(os.path.join(root, file))
+            del instance
