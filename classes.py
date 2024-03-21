@@ -87,3 +87,18 @@ class Custom_listening_activity(discord.BaseActivity):
         }
 
 
+class Instance(subprocess.Popen):
+    def __init__(self,message, url, queue = False):
+        command = ["bin/python3","downloader.py",url]
+        if queue:
+            command.append("queue") 
+        super().__init__(command,stdout=subprocess.PIPE,stderr=subprocess.PIPE,stdin=subprocess.PIPE,universal_newlines=True,shell=True)
+        self.content = message.content
+        self.author = message.author
+        self.channel = message.channel
+        self.guild = message.guild
+        self.url = url
+    def __str__(self):
+        return self.content
+    def __repr__(self):
+        return f'<instance {self.content}>'

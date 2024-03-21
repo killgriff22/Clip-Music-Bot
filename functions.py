@@ -2,7 +2,7 @@ from classes import *
 #
 #
 vc: discord.voice_client.VoiceClient | None = None
-
+instances = []
 def update_queue(queue=queue):
     open("queue.txt", "w").write(str(queue))
 
@@ -51,29 +51,13 @@ async def on_message(message: discord.Message):
             if "https" in command[1]:  # Given a link
                 msg = await message.channel.send(f"downloading {command[1]}")
                 await msg.edit(suppress=True)
-                if "spotify" in command[1]:
-                    file = Spotify_path + Spotify.download_url(command[1])
-                elif "youtu" in command[1]:
-                    file = Youtube_path + Youtube.download_url(command[1])
-                elif "soundcloud" in command[1]:
-                    file = Soundcloud_path + Soundcloud.download_url(command[1])
-                msg = await message.channel.send(f"Downloaded {command[1]}", files=[discord.File(file)])
-                await msg.edit(suppress=True)
-                os.remove(file)
+                instances.append(Instance(message, command[1]))
             elif command[1].isdigit():  # Given a number, assume we want to select from a list
                 for user_ in users.copy():
                     if user_.user == message.author:
                         url = user_.search_urls[int(command[1])]
                         await message.channel.send(f"downloading {url}")
-                        if "spotify" in url:
-                            file = Spotify_path + \
-                                Spotify.download_url(
-                                    user_.search_urls[int(command[1])])
-                        elif "youtu" in url:
-                            file = Youtube_path + \
-                                Youtube.download_url(url)
-                        await message.channel.send(f"Downloaded {url}", files=[discord.File(file)])
-                        os.remove(file)
+                        instances.append(Instance(message, url))
                         users.remove(user_)
                         break
             else:  # assume we want to search for something
@@ -190,7 +174,7 @@ async def on_message(message: discord.Message):
                 url = split[1]
                 command = split
                 if "https" in url:
-                    subprocess.Popen(["bin/python3", "downloader.py", url])
+                    instances.append(Instance(message, url))
                 elif "cache" in url:
                     await message.channel.send("Not Implemented")
                     return
@@ -268,17 +252,18 @@ async def queue_loop(): #manages the queue
             update_queue()
     await music_channel.send("Queue has ended") #when the queue is empty, say it!
 
-@user.event
-async def on_voice_state_update(member, before, after):
-    return
-    global vc
-    music_channel = user.get_guild(
-        1085995033037127750).get_channel(1164386048407781457)
-    if after.channel is None and member==user.user:
-        await music_channel.send("Bot has been Disconnected")
-        vc=None
-    elif after.channel is not None and member==user.user:
-        await vc.disconnect()
-        await after.channel.disconnect()
-        vc = await after.channel.connect()
-        await music_channel.send(f"Bot has moved to {after.channel.name}")
+@tasks.loop(seconds=4)
+async def instance_loop():
+    global downloader_instances
+    for instance in downloader_instances.copy():
+        instance:Instance = instance
+        if instance.poll() != None:
+            downloader_instances.remove(instance)
+            msg = await instance.channel.send(f"Downloaded {instance.url}")
+            msg.edit(suppress=True)
+    #os.walk through the downloads folder and send all mp3s to the music channel
+    for root, dirs, files in os.walk("Downloads"):
+        for file in files:
+            if "mp3" in file:
+                await user.get_guild(1085995033037127750).get_channel(1164386048407781457).send(file, files=[discord.File(os.path.join(root, file))])
+                os.remove(os.path.join(root, file))
