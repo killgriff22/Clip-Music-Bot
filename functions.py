@@ -255,8 +255,8 @@ async def queue_loop(): #manages the queue
 
 @tasks.loop(seconds=4)
 async def instance_loop():
-    global downloader_instances
-    for instance in downloader_instances.copy():
+    global instances
+    for instance in instances.copy():
         instance:Instance = instance
         if instance.poll() == None:
             print("Instance finished")
