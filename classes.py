@@ -89,6 +89,7 @@ class Custom_listening_activity(discord.BaseActivity):
 
 class Instance(subprocess.Popen):
     def __init__(self,message, url, queue = False):
+        print("New instance created")
         command = ["bin/python3","downloader.py",url]
         if queue:
             command.append("queue") 
