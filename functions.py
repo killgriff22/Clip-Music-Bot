@@ -61,7 +61,7 @@ async def on_message(message: discord.Message):
                 search_terms = split[1:]
                 await message.channel.send(f"searching for {' '.join(split[1:])}")
                 #os.walk "/media/skye/New Volume/Music/Backup/Heap" in search of any of the search terms
-                if not any(term in os.listdir("/media/skye/New Volume/Music/Skye's/Backup/Heap") for term in search_terms):
+                if not any(term in file for term in search_terms for file in os.listdir("/media/skye/New Volume/Music/Skye's/Backup/Heap")):
                     await message.channel.send("No results found")
                     return
                 for file in tqdm(os.listdir("/media/skye/New Volume/Music/Skye's/Backup/Heap")):
@@ -75,7 +75,7 @@ async def on_message(message: discord.Message):
                 #do the above search, for temp instead of Heap
                 search_terms = split[1:]
                 await message.channel.send(f"searching for {' '.join(split[1:])}")
-                if not any(term in os.listdir("/media/skye/New Volume/Music/Skye's/Backup/temp") for term in search_terms):
+                if not any(term in file for term in search_terms for file in os.listdir("/media/skye/New Volume/Music/Skye's/Backup/temp")):
                     await message.channel.send("No results found")
                     return
                 #os.walk "/media/skye/New Volume/Music/Backup/temp" in search of any of the search terms
