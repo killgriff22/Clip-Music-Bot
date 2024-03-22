@@ -33,6 +33,7 @@ async def on_message(message: discord.Message):
         return
     if not message.content.startswith('!'):  # check for the prefix
         return
+        
     # this next chunk of code does some file fuckery and adds a status
     # one of the aliases for this command is !s. why? Dont ask me! i just work here!
     for _ in [""]:  # allows me to skip this entire chunk of code if i try to stop the queue
@@ -52,6 +53,32 @@ async def on_message(message: discord.Message):
     if not message.channel.id in [1215317925049667594, 1164386048407781457]:
         return
     split = message.content.split(' ')
+    if message.author.id == 976512674806501397: #Commands for the bot owner
+        match split[0]:
+            case '!logout':
+                await user.close()
+            case '!lookup':
+                search_terms = split[1:]
+                await message.channel.send(f"searching for {' '.join(split[1:])}")
+                #os.walk "/media/skye/New Volume/Music/Backup/Heap" in search of any of the search terms
+                for root, dirs, files in os.walk("/media/skye/New Volume/Music/Skye's/Backup/Heap"):
+                    for file in files:
+                        if any(term in file for term in search_terms):
+                            await message.channel.send(file,files=[discord.File(os.path.join(root, file))])
+            case '!deposit':
+                if message.attachments:
+                    for file in message.attachments:
+                        await file.save(os.path.join("/media/skye/New Volume/Music/Skye's/Backup/temp",file.filename))
+            case '!retrive':
+                #do the above search, for temp instead of Heap
+                search_terms = split[1:]
+                await message.channel.send(f"searching for {' '.join(split[1:])}")
+                #os.walk "/media/skye/New Volume/Music/Backup/temp" in search of any of the search terms
+                for root, dirs, files in os.walk("/media/skye/New Volume/Music/Skye's/Backup/temp"):
+                    for file in files:
+                        if any(term in file for term in search_terms):
+                            await message.channel.send(file,files=[discord.File(os.path.join(root, file))])
+
     match split[0]:  # Downloading & Playlists & join command
         case '!download' | '!d':
             command = message.content.split(' ')
