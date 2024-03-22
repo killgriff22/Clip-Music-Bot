@@ -63,7 +63,6 @@ async def on_message(message: discord.Message):
                 #os.walk "/media/skye/New Volume/Music/Backup/Heap" in search of any of the search terms
                 if not any(term in file for term in search_terms for file in os.listdir("/media/skye/New Volume/Music/Skye's/Backup/Heap")):
                     await message.channel.send("No results found")
-                    return
                 for file in tqdm(os.listdir("/media/skye/New Volume/Music/Skye's/Backup/Heap")):
                         if any(term in file for term in search_terms):
                             await message.channel.send(file,files=[discord.File(os.path.join("/media/skye/New Volume/Music/Skye's/Backup/Heap", file))])
