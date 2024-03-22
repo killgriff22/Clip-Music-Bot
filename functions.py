@@ -63,10 +63,10 @@ async def on_message(message: discord.Message):
                 #os.walk "/media/skye/New Volume/Music/Backup/Heap" in search of any of the search terms
                 if not any(term in os.listdir("/media/skye/New Volume/Music/Skye's/Backup/Heap") for term in search_terms):
                     await message.channel.send("No results found")
-                for root, dirs, files in tqdm(os.walk("/media/skye/New Volume/Music/Skye's/Backup/Heap")):
-                    for file in files:
+                    return
+                for file in tqdm(os.listdir("/media/skye/New Volume/Music/Skye's/Backup/Heap")):
                         if any(term in file for term in search_terms):
-                            await message.channel.send(file,files=[discord.File(os.path.join(root, file))])
+                            await message.channel.send(file,files=[discord.File(os.path.join("/media/skye/New Volume/Music/Skye's/Backup/Heap", file))])
             case '!deposit':
                 if message.attachments:
                     for file in message.attachments:
@@ -77,11 +77,11 @@ async def on_message(message: discord.Message):
                 await message.channel.send(f"searching for {' '.join(split[1:])}")
                 if not any(term in os.listdir("/media/skye/New Volume/Music/Skye's/Backup/temp") for term in search_terms):
                     await message.channel.send("No results found")
+                    return
                 #os.walk "/media/skye/New Volume/Music/Backup/temp" in search of any of the search terms
-                for root, dirs, files in tqdm(os.walk("/media/skye/New Volume/Music/Skye's/Backup/temp")):
-                    for file in files:
-                        if any(term in file for term in search_terms):
-                            await message.channel.send(file,files=[discord.File(os.path.join(root, file))])
+                for file in tqdm(os.listdir("/media/skye/New Volume/Music/Skye's/Backup/temp")):
+                    if any(term in file for term in search_terms):
+                        await message.channel.send(file,files=[discord.File(os.path.join("/media/skye/New Volume/Music/Skye's/Backup/temp", file))])
 
     match split[0]:  # Downloading & Playlists & join command
         case '!download' | '!d':
