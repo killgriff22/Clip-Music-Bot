@@ -7,10 +7,11 @@ try:
     from spotipy.oauth2 import SpotifyClientCredentials
     from ytmusicapi import YTMusic
     from pytube import YouTube, Playlist
+    from tqdm import tqdm
 except ImportError:
     import os
     os.system(
-        "pip install pytube spotdl scdl requests spotipy discord.py discord.py pynacl")
+        "pip install pytube spotdl scdl requests spotipy discord.py discord.py pynacl tqdm")
     import discord
     import requests
     from discord.ext import tasks
@@ -19,6 +20,7 @@ except ImportError:
     from ytmusicapi import YTMusic
     from pytube import YouTube, Playlist
     import youtube_dl
+    from tqdm import tqdm
 from config import *
 import random
 import asyncio
