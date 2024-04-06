@@ -2,7 +2,7 @@ from classes import *
 #
 #
 vc: discord.voice_client.VoiceClient | None = None
-instances = []
+instances:list[Instance] = []
 
 
 def update_queue(queue=queue):
@@ -30,7 +30,12 @@ async def on_ready():
 async def on_message(message: discord.Message):
     global vc, queue, paused, loop
     if message.author == user.user:  # dont respond to our own messages
-        return
+        if message.attachments:
+            for file in message.attachments:
+                for root, dirs, files in os.walk("Downloads"):
+                    for file_ in files:
+                        if file.filename in file_:
+                            os.remove(os.path.join(root, file_))
     if not message.content.startswith('!'):  # check for the prefix
         return
         
@@ -293,7 +298,6 @@ async def queue_loop():  # manages the queue
 async def instance_loop():
     global instances
     for instance in instances.copy():
-        instance: Instance = instance
         if instance.poll() != None:
             print("Instance finished")
             instances.remove(instance)
