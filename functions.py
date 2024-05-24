@@ -165,8 +165,6 @@ async def on_message(message: discord.Message):
                         vc = await message.guild.get_channel(1088131367587565628).connect()
                     case '1':
                         vc = await message.guild.get_channel(1170801016577458278).connect()
-#                    case '3':
-#                        vc = await message.guild.get_channel(1217156460769968250).connect()
                     case _:
                         vc = await message.author.voice.channel.connect()
             vc = await message.author.voice.channel.connect()
